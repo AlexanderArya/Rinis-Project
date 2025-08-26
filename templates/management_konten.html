@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen Properti - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .modal-backdrop {
+        backdrop-filter: blur(4px);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <h1 class="text-2xl font-bold text-blue-600">PropertyCMS</h1>
+            </div>
+            <div class="ml-10">
+              <div class="flex items-baseline space-x-4">
+                <a
+                  href="#"
+                  class="bg-blue-100 text-blue-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >Manajemen Properti</a
+                >
+                <a
+                  href="#"
+                  class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >Dashboard</a
+                >
+                <a
+                  href="#"
+                  class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >Laporan</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+            >
+              Admin Panel
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header Section -->
+      <div class="mb-8">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+              Manajemen Properti
+            </h1>
+            <p class="text-gray-600">Kelola semua properti dalam sistem CMS</p>
+          </div>
+          <div class="mt-4 sm:mt-0">
+            <button
+              id="addPropertyBtn"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-200 shadow-sm hover:shadow-md"
+            >
+              + Tambah Properti
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters and Search -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Pencarian</label
+              >
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama atau alamat..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Tipe Properti</label
+              >
+              <select
+                id="typeFilter"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Semua Tipe</option>
+                <option value="Rumah">Rumah</option>
+                <option value="Apartemen">Apartemen</option>
+                <option value="Ruko">Ruko</option>
+                <option value="Villa">Villa</option>
+                <option value="Tanah">Tanah</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Status</label
+              >
+              <select
+                id="statusFilter"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Semua Status</option>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Terjual">Terjual</option>
+                <option value="Disewa">Disewa</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Rentang Harga</label
+              >
+              <select
+                id="priceFilter"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Semua Harga</option>
+                <option value="0-500000000">< 500 Juta</option>
+                <option value="500000000-1000000000">
+                  500 Juta - 1 Miliar
+                </option>
+                <option value="1000000000-2000000000">1 - 2 Miliar</option>
+                <option value="2000000000-999999999999">> 2 Miliar</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <button
+              id="resetFilters"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Reset Filter
+            </button>
+            <div class="text-sm text-gray-500">
+              Total:
+              <span id="totalProperties" class="font-medium text-gray-900"
+                >0</span
+              >
+              properti
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Properties Grid -->
+      <div
+        id="propertiesGrid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <!-- Property cards will be inserted here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="text-center py-12 hidden">
+        <div class="mx-auto h-24 w-24 text-gray-400">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 21V5a2 2 0 012-2h6a2 2 0 012 2v16M9 7h6m-6 4h6m-6 4h6"
+            />
+          </svg>
+        </div>
+        <h3 class="mt-4 text-lg font-medium text-gray-900">
+          Tidak ada properti
+        </h3>
+        <p class="mt-2 text-gray-500">
+          Mulai dengan menambahkan properti baru.
+        </p>
+      </div>
+    </div>
+
+    <!-- Add/Edit Property Modal -->
+    <div id="propertyModal" class="fixed inset-0 z-50 hidden">
+      <div
+        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 modal-backdrop transition-opacity"
+        ></div>
+
+        <div
+          class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full sm:p-6"
+        >
+          <div class="flex justify-between items-center mb-6">
+            <h3 id="modalTitle" class="text-lg font-medium text-gray-900">
+              Tambah Properti Baru
+            </h3>
+            <button id="closeModal" class="text-gray-400 hover:text-gray-600">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
+          </div>
+
+          <form id="propertyForm" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Nama Properti *</label
+                >
+                <input
+                  type="text"
+                  id="propertyName"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Harga (IDR) *</label
+                >
+                <input
+                  type="number"
+                  id="propertyPrice"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Tipe Properti *</label
+                >
+                <select
+                  id="propertyType"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Pilih Tipe</option>
+                  <option value="Rumah">Rumah</option>
+                  <option value="Apartemen">Apartemen</option>
+                  <option value="Ruko">Ruko</option>
+                  <option value="Villa">Villa</option>
+                  <option value="Tanah">Tanah</option>
+                </select>
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Alamat *</label
+                >
+                <textarea
+                  id="propertyAddress"
+                  required
+                  rows="2"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Status *</label
+                >
+                <select
+                  id="propertyStatus"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Pilih Status</option>
+                  <option value="Tersedia">Tersedia</option>
+                  <option value="Terjual">Terjual</option>
+                  <option value="Disewa">Disewa</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >URL Gambar</label
+                >
+                <input
+                  type="url"
+                  id="propertyImage"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Fasilitas</label
+                >
+                <textarea
+                  id="propertyFacilities"
+                  rows="2"
+                  placeholder="Contoh: 3 kamar tidur, 2 kamar mandi, garasi, taman"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Deskripsi</label
+                >
+                <textarea
+                  id="propertyDescription"
+                  rows="3"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                ></textarea>
+              </div>
+            </div>
+
+            <div
+              class="flex justify-end space-x-3 pt-6 border-t border-gray-200"
+            >
+              <button
+                type="button"
+                id="cancelBtn"
+                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Simpan Properti
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden">
+      <div
+        class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 modal-backdrop transition-opacity"
+        ></div>
+
+        <div
+          class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full sm:p-6"
+        >
+          <div class="flex items-center">
+            <div
+              class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100"
+            >
+              <svg
+                class="h-6 w-6 text-red-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <div class="mt-0 ml-4">
+              <h3 class="text-lg font-medium text-gray-900">Hapus Properti</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">
+                  Apakah Anda yakin ingin menghapus properti ini? Tindakan ini
+                  tidak dapat dibatalkan.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5 flex justify-end space-x-3">
+            <button
+              id="cancelDelete"
+              type="button"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Batal
+            </button>
+            <button
+              id="confirmDelete"
+              type="button"
+              class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700"
+            >
+              Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Global variables
+      let properties = [];
+      let filteredProperties = [];
+      let editingPropertyId = null;
+      let deletePropertyId = null;
+
+      // Sample data
+      const sampleProperties = [
+        {
+          id: 1,
+          name: "Rumah Minimalis Modern Jakarta",
+          price: 750000000,
+          type: "Rumah",
+          address: "Jl. Sudirman No. 123, Jakarta Pusat",
+          status: "Tersedia",
+          image:
+            "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop",
+          facilities: "3 kamar tidur, 2 kamar mandi, garasi, taman",
+          description:
+            "Rumah minimalis modern dengan desain kontemporer di lokasi strategis Jakarta Pusat.",
+        },
+        {
+          id: 2,
+          name: "Apartemen Luxury Sudirman",
+          price: 1200000000,
+          type: "Apartemen",
+          address: "Jl. Sudirman Kav. 52-53, Jakarta Selatan",
+          status: "Tersedia",
+          image:
+            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=300&fit=crop",
+          facilities: "2 kamar tidur, 2 kamar mandi, balkon, kolam renang",
+          description:
+            "Apartemen mewah dengan fasilitas lengkap dan pemandangan kota yang menakjubkan.",
+        },
+        {
+          id: 3,
+          name: "Villa Puncak Bogor",
+          price: 2500000000,
+          type: "Villa",
+          address: "Jl. Raya Puncak KM 87, Bogor, Jawa Barat",
+          status: "Terjual",
+          image:
+            "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&h=300&fit=crop",
+          facilities: "4 kamar tidur, 3 kamar mandi, kolam renang, taman luas",
+          description:
+            "Villa ekslusif dengan pemandangan pegunungan yang menawan dan udara sejuk.",
+        },
+        {
+          id: 4,
+          name: "Ruko Strategis BSD",
+          price: 1800000000,
+          type: "Ruko",
+          address: "Jl. BSD Raya No. 45, Tangerang Selatan",
+          status: "Disewa",
+          image:
+            "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
+          facilities: "3 lantai, parkir luas, lokasi strategis",
+          description:
+            "Ruko komersial di kawasan bisnis BSD dengan akses mudah dan fasilitas lengkap.",
+        },
+        {
+          id: 5,
+          name: "Tanah Kavling Bekasi",
+          price: 300000000,
+          type: "Tanah",
+          address: "Jl. Raya Bekasi-Cibitung KM 23, Bekasi",
+          status: "Tersedia",
+          image:
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=300&fit=crop",
+          facilities: "Luas 200m², SHM, siap bangun",
+          description:
+            "Tanah kavling siap bangun di area berkembang dengan akses transportasi yang baik.",
+        },
+      ];
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        properties = [...sampleProperties];
+        filteredProperties = [...properties];
+        renderProperties();
+        updatePropertyCount();
+        initializeEventListeners();
+      });
+
+      // Event listeners
+      function initializeEventListeners() {
+        // Modal controls
+        document
+          .getElementById("addPropertyBtn")
+          .addEventListener("click", openAddModal);
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("cancelBtn")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("propertyForm")
+          .addEventListener("submit", handleFormSubmit);
+
+        // Delete modal
+        document
+          .getElementById("cancelDelete")
+          .addEventListener("click", closeDeleteModal);
+        document
+          .getElementById("confirmDelete")
+          .addEventListener("click", confirmDelete);
+
+        // Filters
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", applyFilters);
+        document
+          .getElementById("typeFilter")
+          .addEventListener("change", applyFilters);
+        document
+          .getElementById("statusFilter")
+          .addEventListener("change", applyFilters);
+        document
+          .getElementById("priceFilter")
+          .addEventListener("change", applyFilters);
+        document
+          .getElementById("resetFilters")
+          .addEventListener("click", resetFilters);
+
+        // Close modal on backdrop click
+        document
+          .getElementById("propertyModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeModal();
+          });
+        document
+          .getElementById("deleteModal")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeDeleteModal();
+          });
+      }
+
+      // Render properties
+      function renderProperties() {
+        const grid = document.getElementById("propertiesGrid");
+        const emptyState = document.getElementById("emptyState");
+
+        if (filteredProperties.length === 0) {
+          grid.innerHTML = "";
+          emptyState.classList.remove("hidden");
+          return;
+        }
+
+        emptyState.classList.add("hidden");
+        grid.innerHTML = filteredProperties
+          .map((property) => createPropertyCard(property))
+          .join("");
+      }
+
+      // Create property card
+      function createPropertyCard(property) {
+        const statusColor = {
+          Tersedia: "bg-green-100 text-green-800",
+          Terjual: "bg-red-100 text-red-800",
+          Disewa: "bg-yellow-100 text-yellow-800",
+        };
+
+        const formatPrice = (price) => {
+          return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(price);
+        };
+
+        return `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover fade-in">
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                        <img src="${property.image}" alt="${
+          property.name
+        }" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">${
+                              property.name
+                            }</h3>
+                            <span class="ml-2 px-2 py-1 text-xs font-medium rounded-full ${
+                              statusColor[property.status] ||
+                              "bg-gray-100 text-gray-800"
+                            }">
+                                ${property.status}
+                            </span>
+                        </div>
+                        <p class="text-2xl font-bold text-blue-600 mb-3">${formatPrice(
+                          property.price
+                        )}</p>
+                        <div class="space-y-2 text-sm text-gray-600 mb-4">
+                            <div class="flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 21V5a2 2 0 012-2h6a2 2 0 012 2v16M9 7h6m-6 4h6m-6 4h6"/>
+                                </svg>
+                                ${property.type}
+                            </div>
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 mr-2 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="line-clamp-2">${
+                                  property.address
+                                }</span>
+                            </div>
+                            ${
+                              property.facilities
+                                ? `
+                            <div class="flex items-start">
+                                <svg class="w-4 h-4 mr-2 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="line-clamp-2">${property.facilities}</span>
+                            </div>
+                            `
+                                : ""
+                            }
+                        </div>
+                        ${
+                          property.description
+                            ? `
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-3">${property.description}</p>
+                        `
+                            : ""
+                        }
+                        <div class="flex space-x-2">
+                            <button onclick="editProperty(${
+                              property.id
+                            })" class="flex-1 bg-blue-50 text-blue-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-100 transition duration-200">
+                                Edit
+                            </button>
+                            <button onclick="deleteProperty(${
+                              property.id
+                            })" class="flex-1 bg-red-50 text-red-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-red-100 transition duration-200">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // Modal functions
+      function openAddModal() {
+        editingPropertyId = null;
+        document.getElementById("modalTitle").textContent =
+          "Tambah Properti Baru";
+        document.getElementById("propertyForm").reset();
+        document.getElementById("propertyModal").classList.remove("hidden");
+      }
+
+      function closeModal() {
+        document.getElementById("propertyModal").classList.add("hidden");
+        document.getElementById("propertyForm").reset();
+        editingPropertyId = null;
+      }
+
+      function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.add("hidden");
+        deletePropertyId = null;
+      }
+
+      // Property operations
+      function editProperty(id) {
+        const property = properties.find((p) => p.id === id);
+        if (!property) return;
+
+        editingPropertyId = id;
+        document.getElementById("modalTitle").textContent = "Edit Properti";
+
+        // Fill form with property data
+        document.getElementById("propertyName").value = property.name;
+        document.getElementById("propertyPrice").value = property.price;
+        document.getElementById("propertyType").value = property.type;
+        document.getElementById("propertyAddress").value = property.address;
+        document.getElementById("propertyStatus").value = property.status;
+        document.getElementById("propertyImage").value = property.image || "";
+        document.getElementById("propertyFacilities").value =
+          property.facilities || "";
+        document.getElementById("propertyDescription").value =
+          property.description || "";
+
+        document.getElementById("propertyModal").classList.remove("hidden");
+      }
+
+      function deleteProperty(id) {
+        deletePropertyId = id;
+        document.getElementById("deleteModal").classList.remove("hidden");
+      }
+
+      function confirmDelete() {
+        if (deletePropertyId) {
+          properties = properties.filter((p) => p.id !== deletePropertyId);
+          applyFilters();
+          closeDeleteModal();
+        }
+      }
+
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const propertyData = Object.fromEntries(formData);
+        propertyData.price = Number(propertyData.price);
+
+        if (editingPropertyId) {
+          // Edit existing property
+          const index = properties.findIndex((p) => p.id === editingPropertyId);
+          if (index !== -1) {
+            properties[index] = { id: editingPropertyId, ...propertyData };
+          }
+        } else {
+          // Add new property
+          const newProperty = {
+            id:
+              properties.length > 0
+                ? Math.max(properties.map((p) => p.id)) + 1
+                : 1,
+            ...propertyData,
+          };
+          properties.push(newProperty);
+        }
+
+        closeModal();
+        applyFilters();
+      }
+
+      function applyFilters() {
+        const search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const type = document.getElementById("typeFilter").value;
+        const status = document.getElementById("statusFilter").value;
+        const price = document.getElementById("priceFilter").value;
+
+        filteredProperties = properties.filter((p) => {
+          let match = true;
+          if (
+            search &&
+            !(
+              p.name.toLowerCase().includes(search) ||
+              p.address.toLowerCase().includes(search)
+            )
+          )
+            match = false;
+          if (type && p.type !== type) match = false;
+          if (status && p.status !== status) match = false;
+          if (price) {
+            const [min, max] = price.split("-").map(Number);
+            if (p.price < min || p.price > max) match = false;
+          }
+          return match;
+        });
+        renderProperties();
+        updatePropertyCount();
+      }
+
+      function resetFilters() {
+        document.getElementById("searchInput").value = "";
+        document.getElementById("typeFilter").value = "";
+        document.getElementById("statusFilter").value = "";
+        document.getElementById("priceFilter").value = "";
+        filteredProperties = [...properties];
+        renderProperties();
+        updatePropertyCount();
+      }
+
+      function updatePropertyCount() {
+        document.getElementById("totalProperties").textContent =
+          filteredProperties.length;
+      }
+    </script>
+  </body>
+</html>
