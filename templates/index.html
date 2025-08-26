@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PropertyHub - Temukan Rumah Impian Anda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2563eb",
+              secondary: "#f59e0b",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+      <nav class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <!-- Logo -->
+          <div class="flex items-center space-x-2">
+            <div class="bg-primary p-2 rounded-lg">
+              <i class="fas fa-home text-white text-xl"></i>
+            </div>
+            <span class="text-2xl font-bold text-gray-800">PropertyHub</span>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-center space-x-8">
+            <a
+              href="#home"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Beranda</a
+            >
+            <a
+              href="#properties"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Properti</a
+            >
+            <a
+              href="#about"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Tentang</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Kontak</a
+            >
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="hidden md:flex items-center space-x-4">
+            <button
+              class="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition duration-300"
+            >
+              Hubungi Kami
+            </button>
+            <button
+              class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300"
+            >
+              Lihat Properti
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button class="md:hidden" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars text-2xl text-gray-700"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+          <div class="flex flex-col space-y-4">
+            <a
+              href="#home"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Beranda</a
+            >
+            <a
+              href="#properties"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Properti</a
+            >
+            <a
+              href="#about"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Tentang</a
+            >
+            <a
+              href="#contact"
+              class="text-gray-700 hover:text-primary transition duration-300"
+              >Kontak</a
+            >
+            <div class="flex flex-col space-y-2 pt-4">
+              <button
+                class="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition duration-300"
+              >
+                Hubungi Kami
+              </button>
+              <button
+                class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300"
+              >
+                Lihat Properti
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section
+      id="home"
+      class="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white"
+    >
+      <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+      <div class="relative container mx-auto px-4 py-20 md:py-32">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            Temukan Rumah <span class="text-secondary">Impian Anda</span>
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 text-gray-200">
+            Koleksi properti premium dengan lokasi strategis dan harga terbaik
+            di Jakarta dan sekitarnya
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button
+              class="px-8 py-4 bg-secondary text-white rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold"
+            >
+              <i class="fas fa-search mr-2"></i>Cari Properti Sekarang
+            </button>
+            <button
+              class="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-blue-900 transition duration-300 font-semibold"
+            >
+              <i class="fas fa-play mr-2"></i>Lihat Video Tour
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative wave -->
+      <div class="absolute bottom-0 left-0 right-0">
+        <svg
+          viewBox="0 0 1440 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,64C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64V120H1392C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120H0V64Z"
+            fill="#f9fafb"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <!-- Search & Filter -->
+    <section class="bg-white py-8 shadow-lg">
+      <div class="container mx-auto px-4">
+        <div class="bg-gray-50 rounded-2xl p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Lokasi</label
+              >
+              <select
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option>Pilih Lokasi</option>
+                <option>Jakarta Selatan</option>
+                <option>Jakarta Pusat</option>
+                <option>Tangerang</option>
+                <option>Bekasi</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Tipe Properti</label
+              >
+              <select
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option>Semua Tipe</option>
+                <option>Rumah</option>
+                <option>Apartemen</option>
+                <option>Townhouse</option>
+                <option>Villa</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Rentang Harga</label
+              >
+              <select
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option>Semua Harga</option>
+                <option>< 1 Miliar</option>
+                <option>1-3 Miliar</option>
+                <option>3-5 Miliar</option>
+                <option>> 5 Miliar</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2"
+                >Kamar Tidur</label
+              >
+              <select
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              >
+                <option>Semua</option>
+                <option>1 Kamar</option>
+                <option>2 Kamar</option>
+                <option>3 Kamar</option>
+                <option>4+ Kamar</option>
+              </select>
+            </div>
+            <div class="flex items-end">
+              <button
+                class="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300 font-semibold"
+              >
+                <i class="fas fa-search mr-2"></i>Cari
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Property Listings -->
+    <section id="properties" class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+            Properti Unggulan
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Temukan pilihan properti terbaik dengan lokasi strategis dan
+            fasilitas lengkap
+          </p>
+        </div>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          id="propertyGrid"
+        >
+          <!-- Property cards will be generated by JavaScript -->
+        </div>
+
+        <div class="text-center mt-12">
+          <button
+            class="px-8 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition duration-300 font-semibold"
+          >
+            Lihat Semua Properti
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="bg-primary py-16 text-white">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl font-bold mb-2">500+</div>
+            <div class="text-blue-200">Properti Tersedia</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">250+</div>
+            <div class="text-blue-200">Klien Puas</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">15+</div>
+            <div class="text-blue-200">Tahun Pengalaman</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold mb-2">50+</div>
+            <div class="text-blue-200">Agen Profesional</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Company Info -->
+          <div>
+            <div class="flex items-center space-x-2 mb-6">
+              <div class="bg-primary p-2 rounded-lg">
+                <i class="fas fa-home text-white"></i>
+              </div>
+              <span class="text-xl font-bold">PropertyHub</span>
+            </div>
+            <p class="text-gray-400 mb-4">
+              Platform terpercaya untuk menemukan properti impian Anda dengan
+              layanan profesional dan transparan.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-youtube text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Menu Utama</h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Beranda</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Properti</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Tentang Kami</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Karir</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Layanan</h3>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Jual Properti</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Beli Properti</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Sewa Properti</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Konsultasi</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition duration-300"
+                  >Investasi</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <h3 class="text-lg font-semibold mb-6">Kontak Kami</h3>
+            <div class="space-y-3">
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-map-marker-alt text-primary"></i>
+                <span class="text-gray-400"
+                  >Jl. Sudirman No. 123, Jakarta Pusat</span
+                >
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-phone text-primary"></i>
+                <span class="text-gray-400">+62 21 1234 5678</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-envelope text-primary"></i>
+                <span class="text-gray-400">info@propertyhub.com</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-clock text-primary"></i>
+                <span class="text-gray-400">Sen-Jum: 08:00-17:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+          <p class="text-gray-400">
+            © 2025 PropertyHub. Semua hak dilindungi. |
+            <a href="#" class="hover:text-white transition duration-300"
+              >Kebijakan Privasi</a
+            >
+            |
+            <a href="#" class="hover:text-white transition duration-300"
+              >Syarat & Ketentuan</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const mobileMenu = document.getElementById("mobileMenu");
+        mobileMenu.classList.toggle("hidden");
+      }
+
+      // Sample property data
+      const properties = [
+        {
+          id: 1,
+          title: "Rumah Mewah Pondok Indah",
+          price: "Rp 2.8 Miliar",
+          location: "Pondok Indah, Jakarta Selatan",
+          bedrooms: 4,
+          bathrooms: 3,
+          area: "250 m²",
+          image:
+            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2075&q=80",
+          featured: true,
+        },
+        {
+          id: 2,
+          title: "Apartemen Premium Senayan",
+          price: "Rp 1.5 Miliar",
+          location: "Senayan, Jakarta Pusat",
+          bedrooms: 2,
+          bathrooms: 2,
+          area: "85 m²",
+          image:
+            "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          featured: false,
+        },
+        {
+          id: 3,
+          title: "Villa Modern BSD",
+          price: "Rp 3.2 Miliar",
+          location: "BSD City, Tangerang Selatan",
+          bedrooms: 5,
+          bathrooms: 4,
+          area: "320 m²",
+          image:
+            "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80",
+          featured: true,
+        },
+        {
+          id: 4,
+          title: "Townhouse Kelapa Gading",
+          price: "Rp 2.1 Miliar",
+          location: "Kelapa Gading, Jakarta Utara",
+          bedrooms: 3,
+          bathrooms: 2,
+          area: "180 m²",
+          image:
+            "https://images.unsplash.com/photo-1600607687644-c7171b42498b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          featured: false,
+        },
+        {
+          id: 5,
+          title: "Rumah Minimalis Kemang",
+          price: "Rp 2.5 Miliar",
+          location: "Kemang, Jakarta Selatan",
+          bedrooms: 3,
+          bathrooms: 3,
+          area: "200 m²",
+          image:
+            "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          featured: false,
+        },
+        {
+          id: 6,
+          title: "Penthouse Menteng",
+          price: "Rp 4.8 Miliar",
+          location: "Menteng, Jakarta Pusat",
+          bedrooms: 3,
+          bathrooms: 3,
+          area: "150 m²",
+          image:
+            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          featured: true,
+        },
+      ];
+
+      // Generate property cards
+      function generatePropertyCards() {
+        const propertyGrid = document.getElementById("propertyGrid");
+        propertyGrid.innerHTML = "";
+
+        properties.forEach((property) => {
+          const card = document.createElement("div");
+          card.className =
+            "bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden group";
+
+          card.innerHTML = `
+                    <div class="relative overflow-hidden">
+                        <img src="${property.image}" alt="${
+            property.title
+          }" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+                        ${
+                          property.featured
+                            ? '<div class="absolute top-4 left-4 bg-secondary px-3 py-1 rounded-full text-white text-sm font-semibold">Featured</div>'
+                            : ""
+                        }
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 p-2 rounded-full">
+                            <i class="fas fa-heart text-gray-400 hover:text-red-500 transition duration-300 cursor-pointer"></i>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${
+                          property.title
+                        }</h3>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>${property.location}</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-4 text-sm text-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-bed mr-1"></i>
+                                <span>${property.bedrooms} Kamar</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-bath mr-1"></i>
+                                <span>${property.bathrooms} Mandi</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-ruler-combined mr-1"></i>
+                                <span>${property.area}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="text-2xl font-bold text-primary">${
+                              property.price
+                            }</div>
+                            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">
+                                Lihat Detail
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+          propertyGrid.appendChild(card);
+        });
+      }
+
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        generatePropertyCards();
+      });
+
+      // Add scroll effect to header
+      window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 100) {
+          header.classList.add("bg-opacity-95");
+        } else {
+          header.classList.remove("bg-opacity-95");
+        }
+      });
+    </script>
+  </body>
+</html>
