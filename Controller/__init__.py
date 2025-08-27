@@ -8,7 +8,7 @@ from Controller.admin.manajemen_admin import management_admin
 from Controller.admin.laporan_admin import laporan_admin
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder="../templates")
 
 app.register_blueprint(landingPage)
 app.register_blueprint(detail_rumah)

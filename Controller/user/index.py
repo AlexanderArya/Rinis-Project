@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
 
-landingPage = Blueprint("init", __name__,template_folder="../templates")
+landingPage = Blueprint("init", __name__)
 
-@landingPage.route("/",methods=['GET'])
-def init():
-    return render_template('index.html')
+@landingPage.route("/")
+def home():
+    # ini akan cari ke ./templates/index.html
+    return render_template("index.html")
