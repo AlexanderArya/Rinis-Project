@@ -1,53 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer Example</title>
-    <!-- Link CSS untuk Font Awesome (untuk ikon sosial media) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- Link ke Tailwind CSS (jika belum di-include) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-<footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto px-6 md:px-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Kolom 1: Panel Admin -->
-            <div>
-                <h3 class="text-lg font-semibold mb-4">Panel Admin</h3>
-                <p class="text-sm">
-                    Kelola properti, pengguna, dan laporan di panel admin. Pantau kinerja situs dengan mudah.
-                </p>
-            </div>
-            <!-- Kolom 2: Link Navigasi Admin -->
-            <div>
-                <h3 class="text-lg font-semibold mb-4">Navigasi Admin</h3>
-                <ul>
-                    <li><a href="#dashboard" class="text-sm hover:text-primary transition duration-300">Dashboard</a></li>
-                    <li><a href="#manage_properties" class="text-sm hover:text-primary transition duration-300">Manajemen Properti</a></li>
-                    <li><a href="#user_management" class="text-sm hover:text-primary transition duration-300">Manajemen Pengguna</a></li>
-                    <li><a href="#reports" class="text-sm hover:text-primary transition duration-300">Laporan</a></li>
-                </ul>
-            </div>
-            <!-- Kolom 3: Sosial Media -->
-            <div>
-                <h3 class="text-lg font-semibold mb-4">Sosial Media</h3>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-2xl text-gray-400 hover:text-white transition duration-300"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-2xl text-gray-400 hover:text-white transition duration-300"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-2xl text-gray-400 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-2xl text-gray-400 hover:text-white transition duration-300"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
+{# templates/navbar/user_navbar.html #}
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <div class="bg-primary p-2 rounded-lg">
+          <i class="fas fa-home text-white text-xl"></i>
         </div>
+        <span class="text-2xl font-bold text-gray-800">PropertyHub</span>
+      </div>
 
-        <div class="mt-8 text-center">
-            <p class="text-sm text-gray-500">© 2025 PropertyHub. All rights reserved. | Admin Panel</p>
-        </div>
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#home" class="text-gray-700 hover:text-primary transition duration-300">Beranda</a>
+        <a href="#properties" class="text-gray-700 hover:text-primary transition duration-300">Properti</a>
+        <a href="#about" class="text-gray-700 hover:text-primary transition duration-300">Tentang</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition duration-300">Kontak</a>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <button class="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition duration-300">
+          Hubungi Kami
+        </button>
+        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">
+          Lihat Properti
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars text-2xl text-gray-700"></i>
+      </button>
     </div>
-</footer>
 
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+      <div class="flex flex-col space-y-4">
+        <a href="#home" class="text-gray-700 hover:text-primary transition duration-300">Beranda</a>
+        <a href="#properties" class="text-gray-700 hover:text-primary transition duration-300">Properti</a>
+        <a href="#about" class="text-gray-700 hover:text-primary transition duration-300">Tentang</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition duration-300">Kontak</a>
+        <div class="flex flex-col space-y-2 pt-4">
+          <button class="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition duration-300">
+            Hubungi Kami
+          </button>
+          <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">
+            Lihat Properti
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
-</body>
-</html>
+<script>
+  function toggleMobileMenu() {
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (mobileMenu) mobileMenu.classList.toggle("hidden");
+  }
+</script>

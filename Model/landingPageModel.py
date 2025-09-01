@@ -6,12 +6,11 @@ class LandingPageModel:
         self.mysql = MySQL(self.app)
         self.secret_key = app.config['SECRET_KEY']
 
-    def get_property_with_image(self, id_properties):
+    def get_property_with_image(self):
         cur = self.mysql.connection.cursor()
         query = "SELECT id_properties, nama_properti, tipe_properti, harga, alamat_properti, besar_properti, lebar_properti, deskripsi_properti, id_penjual, image_data FROM properties"
 
-
-        cur.execute(query, (id_properties,))
+        cur.execute(query)
         property_data = cur.fetchall()
 
         cur.close()
