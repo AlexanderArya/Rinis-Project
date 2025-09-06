@@ -4,4 +4,4 @@ dashboard_admin = Blueprint("dashboard_admin",__name__,template_folder="../templ
 
 @dashboard_admin.route("/dashboard",methods=['GET'])
 def init():
-    return render_template("dashboard_admin.html")
+    return render_template("admin/dashboard_admin.html")

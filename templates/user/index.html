@@ -97,7 +97,40 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="propertyGrid"></div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {% for p in data %}
+  <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden group">
+    <div class="relative overflow-hidden">
+      <img src="data:image/jpeg;base64,{{ p.image_properties }}" 
+           alt="{{ p.nama_properti }}" 
+           class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+      {% if p.featured %}
+      <div class="absolute top-4 left-4 bg-secondary px-3 py-1 rounded-full text-white text-sm font-semibold">Featured</div>
+      {% endif %}
+      <div class="absolute top-4 right-4 bg-white bg-opacity-90 p-2 rounded-full">
+        <i class="fas fa-heart text-gray-400 hover:text-red-500 transition duration-300 cursor-pointer"></i>
+      </div>
+    </div>
+    <div class="p-6">
+      <h3 class="text-xl font-bold text-gray-800 mb-2">{{ p.nama_properti }}</h3>
+      <div class="flex items-center text-gray-600 mb-4">
+        <i class="fas fa-map-marker-alt mr-2"></i>
+        <span>{{ p.alamat_properti }}</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4 text-sm text-gray-600">
+        <div class="flex items-center"><i class="fas fa-bed mr-1"></i><span>{{ p.besar_properti }} m²</span></div>
+        <div class="flex items-center"><i class="fas fa-bath mr-1"></i><span>{{ p.lebar_properti }} Mandi</span></div>
+        <div class="flex items-center"><i class="fas fa-ruler-combined mr-1"></i><span>{{ p.besar_properti * p.lebar_properti }} m²</span></div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="text-2xl font-bold text-primary">Rp {{ "{:,}".format(p.harga) }}</div>
+        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">Lihat Detail</button>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 
       <div class="text-center mt-12">
         <button class="px-8 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition duration-300 font-semibold">
@@ -131,7 +164,7 @@
     { id:5, title:"Rumah Minimalis Kemang", price:"Rp 2.5 Miliar", location:"Kemang, Jakarta Selatan", bedrooms:3, bathrooms:3, area:"200 m²", image:"https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=2070&q=80", featured:false },
     { id:6, title:"Penthouse Menteng", price:"Rp 4.8 Miliar", location:"Menteng, Jakarta Pusat", bedrooms:3, bathrooms:3, area:"150 m²", image:"https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2070&q=80", featured:true },
   ];
-
+2
   function generatePropertyCards() {
     const grid = document.getElementById("propertyGrid");
     if (!grid) return;

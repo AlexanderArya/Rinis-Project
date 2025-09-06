@@ -5,5 +5,10 @@ class Config:
     MYSQL_PASSWORD = ''  
     MYSQL_DB = 'rinis_property_db'
     SECRET_KEY = 'yoursecretkey'  
-    # MYSQL_CURSORCLASS = 'DictCursor'  # Untuk mendapatkan hasil query dalam bentuk dictionary
 
+    # Tambahin ini biar hasil SELECT jadi dict
+    MYSQL_CURSORCLASS = 'DictCursor'
+
+    # Google Drive API (tambahan)
+    GOOGLE_DRIVE_CREDENTIALS = "credentials.json"  
+    GOOGLE_DRIVE_FOLDER_ID = "1AbCdEfGh123456789"
