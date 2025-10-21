@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - PropertyHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#3B82F6',
+              'primary-dark': '#1D4ED8',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-r from-primary to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-xl font-bold text-gray-900">PropertyHub</h1>
+                <p class="text-sm text-gray-500">Admin Dashboard</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 text-gray-600">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+              <span class="font-medium">Admin</span>
+            </div>
+            <button class="text-gray-500 hover:text-red-600 transition-colors duration-200">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <!-- Page Header -->
+      <div class="flex justify-between items-center mb-8">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900">Manajemen User</h2>
+          <p class="text-gray-600 mt-1">Kelola data pengguna PropertyHub</p>
+        </div>
+        <button 
+          onclick="openModal('add')"
+          class="bg-gradient-to-r from-primary to-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:from-primary-dark hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center space-x-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          <span>Tambah User</span>
+        </button>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm p-6 border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Total Users</p>
+              <p id="totalUsers" class="text-3xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Agents</p>
+              <p id="totalAgents" class="text-3xl font-bold text-emerald-600">0</p>
+            </div>
+            <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Developers</p>
+              <p id="totalDevelopers" class="text-3xl font-bold text-purple-600">0</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-6 border">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Regular Users</p>
+              <p id="totalRegularUsers" class="text-3xl font-bold text-orange-600">0</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filter -->
+      <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
+          <div class="flex-1">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari berdasarkan nama, email, atau telepon..."
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                onkeyup="searchUsers()"
+              />
+            </div>
+          </div>
+          <div class="flex space-x-3">
+            <select 
+              id="roleFilter" 
+              onchange="filterUsers()"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+            >
+              <option value="">Semua Role</option>
+              <option value="user">User</option>
+              <option value="agent">Agent</option>
+              <option value="developer">Developer</option>
+            </select>
+            <button 
+              onclick="refreshData()"
+              class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center space-x-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telepon</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alamat</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody" class="bg-white divide-y divide-gray-200">
+              <!-- Data will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-12 hidden">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada user</h3>
+          <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan user baru.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-12 hidden">
+          <svg class="animate-spin mx-auto h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" class="opacity-75"></path>
+          </svg>
+          <p class="mt-2 text-sm text-gray-500">Memuat data...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for Add/Edit User -->
+    <div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50 px-4">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-900">Tambah User Baru</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <form id="userForm" class="space-y-4">
+            <input type="hidden" id="userId" name="id">
+            
+            <div>
+              <label for="userName" class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+              <input
+                type="text"
+                id="userName"
+                name="name"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                placeholder="Masukkan nama lengkap"
+              >
+            </div>
+
+            <div>
+              <label for="userEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input
+                type="email"
+                id="userEmail"
+                name="email"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                placeholder="Masukkan email"
+              >
+            </div>
+
+            <div>
+              <label for="userPhone" class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
+              <input
+                type="tel"
+                id="userPhone"
+                name="no_telp"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                placeholder="Contoh: 081234567890"
+              >
+            </div>
+
+            <div>
+              <label for="userRole" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+              <select
+                id="userRole"
+                name="role"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+              >
+                <option value="">Pilih Role</option>
+                <option value="user">User</option>
+                <option value="agent">Agent</option>
+                <option value="developer">Developer</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="userAddress" class="block text-sm font-medium text-gray-700 mb-2">Alamat</label>
+              <textarea
+                id="userAddress"
+                name="alamat"
+                rows="3"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-none"
+                placeholder="Masukkan alamat lengkap"
+              ></textarea>
+            </div>
+
+            <div id="passwordSection">
+              <label for="userPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                Password <span id="passwordNote" class="text-gray-500">(kosongkan jika tidak ingin mengubah)</span>
+              </label>
+              <input
+                type="password"
+                id="userPassword"
+                name="password"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                placeholder="Minimal 8 karakter"
+              >
+            </div>
+
+            <div class="flex space-x-3 pt-6">
+              <button
+                type="button"
+                onclick="closeModal()"
+                class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                class="flex-1 px-4 py-2 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg hover:from-primary-dark hover:to-blue-700 transition-all duration-200"
+              >
+                <span id="submitText">Simpan</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50 px-4">
+      <div class="bg-white rounded-xl shadow-2xl max-w-md w-full">
+        <div class="p-6">
+          <div class="flex items-center space-x-4 mb-6">
+            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-gray-900">Konfirmasi Hapus</h3>
+              <p class="text-gray-600">Apakah Anda yakin ingin menghapus user ini?</p>
+            </div>
+          </div>
+          
+          <div id="deleteUserInfo" class="bg-gray-50 rounded-lg p-4 mb-6">
+            <!-- User info will be inserted here -->
+          </div>
+
+          <div class="flex space-x-3">
+            <button
+              type="button"
+              onclick="closeDeleteModal()"
+              class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+            >
+              Batal
+            </button>
+            <button
+              type="button"
+              id="confirmDeleteBtn"
+              onclick="confirmDelete()"
+              class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
+            >
+              Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+      <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-sm">
+        <div class="flex items-center space-x-3">
+          <div id="toastIcon" class="flex-shrink-0">
+            <!-- Icon will be inserted here -->
+          </div>
+          <div id="toastMessage" class="text-sm font-medium text-gray-900">
+            <!-- Message will be inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // API Configuration
+      const API_BASE_URL = 'api'; // Adjust this to your API base URL
+      
+      // Sample data - will be replaced by API data
+      let users = [];
+      let filteredUsers = [];
+      let nextId = 1;
+      let editingUserId = null;
+
+      // Initialize dashboard
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchUsers();
+      });
+      
+      // Fetch all users from API
+      async function fetchUsers() {
+        try {
+          showLoading();
+          
+          const response = await fetch(`${API_BASE_URL}/users`, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          
+          // Assuming API returns: { success: true, data: [...users] }
+          if (data.success) {
+            users = data.data;
+            filteredUsers = [...users];
+            renderUsers();
+            updateStats();
+            hideLoading();
+          } else {
+            throw new Error(data.message || 'Failed to fetch users');
+          }
+
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          hideLoading();
+          showToast('error', 'Gagal memuat data user: ' + error.message);
+          
+          // Fallback to sample data for demo
+          loadSampleData();
+        }
+      }
+
+      // Create new user via API
+      async function createUser(userData) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/users`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          
+          if (data.success) {
+            // Add new user to local data
+            users.push(data.data);
+            filteredUsers = [...users];
+            renderUsers();
+            updateStats();
+            showToast('success', 'User berhasil ditambahkan');
+            return true;
+          } else {
+            throw new Error(data.message || 'Failed to create user');
+          }
+
+        } catch (error) {
+          console.error('Error creating user:', error);
+          showToast('error', 'Gagal menambahkan user: ' + error.message);
+          return false;
+        }
+      }
+
+      // Update user via API
+      async function updateUser(userId, userData) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+            method: 'PUT',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          
+          if (data.success) {
+            // Update user in local data
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex !== -1) {
+              users[userIndex] = data.data;
+              filteredUsers = [...users];
+              renderUsers();
+              updateStats();
+            }
+            showToast('success', 'User berhasil diupdate');
+            return true;
+          } else {
+            throw new Error(data.message || 'Failed to update user');
+          }
+
+        } catch (error) {
+          console.error('Error updating user:', error);
+          showToast('error', 'Gagal mengupdate user: ' + error.message);
+          return false;
+        }
+      }
+
+      // Delete user via API
+      async function deleteUserAPI(userId) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          
+          if (data.success) {
+            // Remove user from local data
+            users = users.filter(u => u.id !== userId);
+            filteredUsers = filteredUsers.filter(u => u.id !== userId);
+            renderUsers();
+            updateStats();
+            showToast('success', 'User berhasil dihapus');
+            return true;
+          } else {
+            throw new Error(data.message || 'Failed to delete user');
+          }
+
+        } catch (error) {
+          console.error('Error deleting user:', error);
+          showToast('error', 'Gagal menghapus user: ' + error.message);
+          return false;
+        }
+      }
+
+      // Load sample data (fallback)
+      function loadSampleData() {
+        users = [
+          { id: 1, name: "John Doe", email: "john@example.com", no_telp: "081234567890", alamat: "Jl. Merdeka No. 123, Jakarta", role: "user" },
+          { id: 2, name: "Jane Smith", email: "jane@example.com", no_telp: "081234567891", alamat: "Jl. Sudirman No. 456, Jakarta", role: "agent" },
+          { id: 3, name: "Bob Wilson", email: "bob@example.com", no_telp: "081234567892", alamat: "Jl. Thamrin No. 789, Jakarta", role: "developer" },
+          { id: 4, name: "Alice Brown", email: "alice@example.com", no_telp: "081234567893", alamat: "Jl. Gatot Subroto No. 101, Jakarta", role: "user" },
+          { id: 5, name: "Charlie Davis", email: "charlie@example.com", no_telp: "081234567894", alamat: "Jl. Kuningan No. 202, Jakarta", role: "agent" }
+        ];
+        filteredUsers = [...users];
+        renderUsers();
+        updateStats();
+      }
+
+      // ======================
+      // UI FUNCTIONS
+      // ======================
+
+      // Render users table
+      function renderUsers() {
+        const tbody = document.getElementById('userTableBody');
+        const emptyState = document.getElementById('emptyState');
+        
+        if (filteredUsers.length === 0) {
+          tbody.innerHTML = '';
+          emptyState.classList.remove('hidden');
+          return;
+        }
+
+        emptyState.classList.add('hidden');
+        
+        tbody.innerHTML = filteredUsers.map(user => `
+          <tr class="hover:bg-gray-50 transition-colors duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${user.id}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                  ${user.name.charAt(0).toUpperCase()}
+                </div>
+                <div class="ml-3">
+                  <div class="text-sm font-medium text-gray-900">${user.name}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.email}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${user.no_telp}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 py-1 text-xs font-medium rounded-full ${getRoleBadgeClass(user.role)}">
+                ${getRoleLabel(user.role)}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs truncate" title="${user.alamat}">${user.alamat}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end space-x-2">
+                <button 
+                  onclick="editUser(${user.id})"
+                  class="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                  title="Edit"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                </button>
+                <button 
+                  onclick="deleteUser(${user.id})"
+                  class="text-red-600 hover:text-red-800 transition-colors duration-200"
+                  title="Hapus"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Update stats
+      function updateStats() {
+        const totalUsers = users.length;
+        const agents = users.filter(u => u.role === 'agent').length;
+        const developers = users.filter(u => u.role === 'developer').length;
+        const regularUsers = users.filter(u => u.role === 'user').length;
+
+        document.getElementById('totalUsers').textContent = totalUsers;
+        document.getElementById('totalAgents').textContent = agents;
+        document.getElementById('totalDevelopers').textContent = developers;
+        document.getElementById('totalRegularUsers').textContent = regularUsers;
+      }
+
+      // Get role badge class
+      function getRoleBadgeClass(role) {
+        const classes = {
+          'user': 'bg-blue-100 text-blue-800',
+          'agent': 'bg-emerald-100 text-emerald-800',
+          'developer': 'bg-purple-100 text-purple-800'
+        };
+        return classes[role] || 'bg-gray-100 text-gray-800';
+      }
+
+      // Get role label
+      function getRoleLabel(role) {
+        const labels = {
+          'user': 'User',
+          'agent': 'Agent',
+          'developer': 'Developer'
+        };
+        return labels[role] || role;
+      }
+
+      // Search users
+      function searchUsers() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const roleFilter = document.getElementById('roleFilter').value;
+        
+        filteredUsers = users.filter(user => {
+          const matchesSearch = user.name.toLowerCase().includes(searchTerm) || 
+                               user.email.toLowerCase().includes(searchTerm) || 
+                               user.no_telp.includes(searchTerm);
+          const matchesRole = !roleFilter || user.role === roleFilter;
+          return matchesSearch && matchesRole;
+        });
+        
+        renderUsers();
+      }
+
+      // Filter users by role
+      function filterUsers() {
+        searchUsers(); // Reuse search function since it handles both search and filter
+      }
+
+      // Refresh data
+      async function refreshData() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('roleFilter').value = '';
+        await fetchUsers();
+        showToast('success', 'Data berhasil diperbarui');
+      }
+
+      // Show loading state
+      function showLoading() {
+        document.getElementById('userTableBody').innerHTML = '';
+        document.getElementById('emptyState').classList.add('hidden');
+        document.getElementById('loadingState').classList.remove('hidden');
+      }
+
+      // Hide loading state
+      function hideLoading() {
+        document.getElementById('loadingState').classList.add('hidden');
+      }
+
+      // Open modal for add/edit
+      function openModal(mode, userId = null) {
+        const modal = document.getElementById('userModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const form = document.getElementById('userForm');
+        const passwordSection = document.getElementById('passwordSection');
+        const passwordNote = document.getElementById('passwordNote');
+        const submitText = document.getElementById('submitText');
+
+        if (mode === 'add') {
+          modalTitle.textContent = 'Tambah User Baru';
+          submitText.textContent = 'Tambah User';
+          passwordNote.classList.add('hidden');
+          document.getElementById('userPassword').required = true;
+          form.reset();
+          editingUserId = null;
+        } else {
+          const user = users.find(u => u.id === userId);
+          if (!user) return;
+
+          modalTitle.textContent = 'Edit User';
+          submitText.textContent = 'Update User';
+          passwordNote.classList.remove('hidden');
+          document.getElementById('userPassword').required = false;
+          
+          // Fill form with user data
+          document.getElementById('userId').value = user.id;
+          document.getElementById('userName').value = user.name;
+          document.getElementById('userEmail').value = user.email;
+          document.getElementById('userPhone').value = user.no_telp;
+          document.getElementById('userRole').value = user.role;
+          document.getElementById('userAddress').value = user.alamat;
+          document.getElementById('userPassword').value = '';
+          
+          editingUserId = userId;
+        }
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      // Close modal
+      function closeModal() {
+        const modal = document.getElementById('userModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        editingUserId = null;
+      }
+
+      // Edit user
+      function editUser(userId) {
+        openModal('edit', userId);
+      }
+
+      // Delete user
+      function deleteUser(userId) {
+        const user = users.find(u => u.id === userId);
+        if (!user) return;
+
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteUserInfo = document.getElementById('deleteUserInfo');
+        
+        deleteUserInfo.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+              ${user.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div class="font-medium text-gray-900">${user.name}</div>
+              <div class="text-sm text-gray-600">${user.email}</div>
+              <div class="text-xs text-gray-500">${getRoleLabel(user.role)}</div>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete(userId);
+        deleteModal.classList.remove('hidden');
+        deleteModal.classList.add('flex');
+      }
+
+      // Close delete modal
+      function closeDeleteModal() {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.classList.add('hidden');
+        deleteModal.classList.remove('flex');
+      }
+
+      // Confirm delete
+      async function confirmDelete(userId) {
+        const success = await deleteUserAPI(userId);
+        if (success) {
+          closeDeleteModal();
+        }
+      }
+
+      // Handle form submission
+      document.getElementById('userForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const userData = {
+          name: formData.get('name').trim(),
+          email: formData.get('email').trim(),
+          no_telp: formData.get('no_telp').trim(),
+          alamat: formData.get('alamat').trim(),
+          role: formData.get('role')
+        };
+
+        // Add password only if provided
+        const password = formData.get('password');
+        if (password && password.trim()) {
+          userData.password = password.trim();
+        }
+
+        // Validation
+        if (!userData.name || !userData.email || !userData.no_telp || !userData.alamat || !userData.role) {
+          showToast('error', 'Semua field harus diisi');
+          return;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(userData.email)) {
+          showToast('error', 'Format email tidak valid');
+          return;
+        }
+
+        // Phone validation
+        const phoneRegex = /^[0-9]{10,13}$/;
+        if (!phoneRegex.test(userData.no_telp.replace(/[^0-9]/g, ''))) {
+          showToast('error', 'Nomor telepon tidak valid (10-13 digit)');
+          return;
+        }
+
+        // Password validation for new user
+        if (!editingUserId && (!userData.password || userData.password.length < 8)) {
+          showToast('error', 'Password minimal 8 karakter');
+          return;
+        }
+
+        // Password validation for update
+        if (editingUserId && userData.password && userData.password.length < 8) {
+          showToast('error', 'Password minimal 8 karakter');
+          return;
+        }
+
+        // Check email uniqueness
+        const existingUser = users.find(u => u.email === userData.email && u.id !== editingUserId);
+        if (existingUser) {
+          showToast('error', 'Email sudah digunakan');
+          return;
+        }
+
+        // Disable submit button
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Menyimpan...';
+
+        let success = false;
+        if (editingUserId) {
+          // Update existing user
+          success = await updateUser(editingUserId, userData);
+        } else {
+          // Add new user
+          success = await createUser(userData);
+        }
+
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+
+        if (success) {
+          closeModal();
+        }
+      });
+
+      // Show toast notification
+      function showToast(type, message) {
+        const toast = document.getElementById('toast');
+        const toastIcon = document.getElementById('toastIcon');
+        const toastMessage = document.getElementById('toastMessage');
+
+        const icons = {
+          success: `<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>`,
+          error: `<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>`,
+          info: `<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                 </svg>`
+        };
+
+        toastIcon.innerHTML = icons[type] || icons.info;
+        toastMessage.textContent = message;
+
+        toast.classList.remove('hidden');
+        
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 3000);
+      }
+
+      // Format phone number input
+      document.getElementById('userPhone').addEventListener('input', function() {
+        let value = this.value.replace(/[^0-9]/g, '');
+        
+        // Add formatting for Indonesian phone numbers
+        if (value.startsWith('0')) {
+          this.value = value;
+        } else if (value.startsWith('62')) {
+          this.value = value;
+        } else if (value.length > 0) {
+          this.value = '0' + value;
+        }
+        
+        // Limit to 13 digits
+        if (this.value.length > 13) {
+          this.value = this.value.slice(0, 13);
+        }
+      });
+
+      // Close modals when clicking outside
+      document.addEventListener('click', function(e) {
+        const userModal = document.getElementById('userModal');
+        const deleteModal = document.getElementById('deleteModal');
+        
+        if (e.target === userModal) {
+          closeModal();
+        }
+        if (e.target === deleteModal) {
+          closeDeleteModal();
+        }
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Escape key to close modals
+        if (e.key === 'Escape') {
+          closeModal();
+          closeDeleteModal();
+        }
+        
+        // Ctrl+N to add new user
+        if (e.ctrlKey && e.key === 'n') {
+          e.preventDefault();
+          openModal('add');
+        }
+      });
+    </script>
+  </body>
+</html>

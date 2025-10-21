@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Rumah Minimalis Kemang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            animation: {
+              "bounce-slow": "bounce 3s infinite",
+              "pulse-slow": "pulse 4s infinite",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"
+  >
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div
+        class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-300/30 to-purple-300/30 rounded-full blur-3xl animate-bounce-slow"
+      ></div>
+      <div
+        class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-emerald-300/30 to-blue-300/30 rounded-full blur-3xl animate-pulse-slow"
+      ></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="relative z-10 p-6">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg"
+          >
+            <span class="text-white font-bold text-lg">P</span>
+          </div>
+          <span
+            class="font-bold text-2xl bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent"
+            >PropertyHub</span
+          >
+        </div>
+        <div class="hidden md:flex items-center space-x-8 text-gray-600">
+          <a
+            href="#"
+            class="hover:text-blue-600 transition-colors duration-300 font-medium"
+            >Beranda</a
+          >
+          <a
+            href="#"
+            class="hover:text-blue-600 transition-colors duration-300 font-medium"
+            >Properti</a
+          >
+          <a
+            href="#"
+            class="hover:text-blue-600 transition-colors duration-300 font-medium"
+            >Kontak</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="relative z-10 max-w-6xl mx-auto px-6 pb-12">
+      <!-- Property Detail Card -->
+      <div
+        class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2 border border-white/20 overflow-hidden"
+      >
+        <!-- Image Section -->
+        <div class="relative">
+          <div
+            class="h-96 md:h-[500px] bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-400 flex items-center justify-center relative overflow-hidden"
+          >
+            <!-- Animated shimmer effect using pure Tailwind -->
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-pulse"
+            ></div>
+
+            <div class="text-center text-white z-10">
+              <div
+                class="w-24 h-24 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30"
+              >
+                <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <p class="text-xl font-semibold">Foto Rumah Minimalis Kemang</p>
+              <p class="text-white/80 mt-2">Premium Property</p>
+            </div>
+          </div>
+
+          <!-- Floating Price Badge -->
+          <div
+            class="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-xl border border-white/30"
+          >
+            <p class="text-3xl font-bold text-emerald-600">Rp 2.5M</p>
+            <p class="text-sm text-gray-600 text-center">Miliar</p>
+          </div>
+
+          <!-- Property Status Badge -->
+          <div
+            class="absolute top-6 left-6 bg-gradient-to-r from-emerald-500 to-green-500 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg"
+          >
+            <span class="animate-pulse">✨</span> Tersedia
+          </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="p-8 md:p-12">
+          <!-- Title & Location -->
+          <div class="mb-10">
+            <h1
+              class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 bg-clip-text text-transparent leading-tight"
+            >
+              Rumah Minimalis Kemang
+            </h1>
+            <div class="flex items-center text-gray-600 text-lg">
+              <svg
+                class="w-6 h-6 mr-3 text-red-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="font-medium">Kemang, Jakarta Selatan</span>
+            </div>
+          </div>
+
+          <!-- Property Features -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div
+              class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border border-blue-200/50"
+            >
+              <div
+                class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 21l4-4 4 4"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-bold text-lg text-gray-800 mb-2">
+                Desain Modern
+              </h3>
+              <p class="text-gray-600">Arsitektur minimalis & elegan</p>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-emerald-50 to-green-100 p-8 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border border-emerald-200/50"
+            >
+              <div
+                class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-green-500 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-bold text-lg text-gray-800 mb-2">
+                Lokasi Strategis
+              </h3>
+              <p class="text-gray-600">Akses mudah ke pusat kota</p>
+            </div>
+
+            <div
+              class="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-2xl text-center hover:-translate-y-2 transition-transform duration-300 border border-purple-200/50"
+            >
+              <div
+                class="w-16 h-16 bg-gradient-to-r from-purple-500 to-violet-500 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              </div>
+              <h3 class="font-bold text-lg text-gray-800 mb-2">
+                Cocok Keluarga
+              </h3>
+              <p class="text-gray-600">Lingkungan nyaman & aman</p>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-10">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">
+              Deskripsi Properti
+            </h3>
+            <div
+              class="bg-gradient-to-r from-gray-50 to-blue-50 p-8 rounded-2xl border border-gray-200/50"
+            >
+              <p class="text-gray-700 leading-relaxed text-lg mb-6">
+                Rumah minimalis dengan desain modern dan elegan yang memadukan
+                kenyamanan dengan gaya hidup kontemporer. Berlokasi strategis di
+                Kemang, Jakarta Selatan, properti ini menawarkan akses mudah ke
+                berbagai fasilitas kota sambil memberikan suasana tenang untuk
+                keluarga.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-lg">
+                Dikelilingi oleh fasilitas lengkap seperti pusat perbelanjaan
+                premium, sekolah berkualitas, rumah sakit, dan berbagai tempat
+                rekreasi. Investasi ideal untuk masa depan keluarga Anda.
+              </p>
+            </div>
+          </div>
+
+          <!-- Facilities -->
+          <div class="mb-10">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">
+              Fasilitas Sekitar
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                class="flex items-center space-x-4 bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/50 hover:bg-white/90 transition-colors duration-300"
+              >
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="text-2xl">🏪</span>
+                </div>
+                <span class="font-semibold text-gray-700">Mall</span>
+              </div>
+              <div
+                class="flex items-center space-x-4 bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/50 hover:bg-white/90 transition-colors duration-300"
+              >
+                <div
+                  class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="text-2xl">🏫</span>
+                </div>
+                <span class="font-semibold text-gray-700">Sekolah</span>
+              </div>
+              <div
+                class="flex items-center space-x-4 bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/50 hover:bg-white/90 transition-colors duration-300"
+              >
+                <div
+                  class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="text-2xl">🏥</span>
+                </div>
+                <span class="font-semibold text-gray-700">Rumah Sakit</span>
+              </div>
+              <div
+                class="flex items-center space-x-4 bg-white/70 backdrop-blur-sm p-5 rounded-xl border border-white/50 hover:bg-white/90 transition-colors duration-300"
+              >
+                <div
+                  class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center"
+                >
+                  <span class="text-2xl">🚇</span>
+                </div>
+                <span class="font-semibold text-gray-700">MRT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="index.html"
+              class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-5 px-8 rounded-2xl font-bold text-center hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl text-lg"
+            >
+              ← Kembali ke Beranda
+            </a>
+            <button
+              class="flex-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white py-5 px-8 rounded-2xl font-bold hover:from-emerald-600 hover:to-green-600 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl text-lg"
+            >
+              💬 Hubungi Agen
+            </button>
+            <button
+              class="bg-gradient-to-r from-purple-500 to-violet-500 text-white py-5 px-8 rounded-2xl font-bold hover:from-purple-600 hover:to-violet-600 transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl text-lg"
+            >
+              ❤️ Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Info Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div
+          class="bg-white/80 backdrop-blur-xl rounded-2xl p-8 border border-white/20 hover:-translate-y-2 transition-all duration-300 shadow-xl hover:shadow-2xl"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-4"
+            >
+              <span class="text-white text-xl">📊</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">Informasi Investasi</h3>
+          </div>
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center py-3 border-b border-gray-100"
+            >
+              <span class="text-gray-600 font-medium">Estimasi ROI</span>
+              <span class="font-bold text-emerald-600 text-lg"
+                >8-12% /tahun</span
+              >
+            </div>
+            <div
+              class="flex justify-between items-center py-3 border-b border-gray-100"
+            >
+              <span class="text-gray-600 font-medium">Potensi Sewa</span>
+              <span class="font-bold text-blue-600 text-lg"
+                >Rp 25-35 jt/bulan</span
+              >
+            </div>
+            <div class="flex justify-between items-center py-3">
+              <span class="text-gray-600 font-medium">Apresiasi Nilai</span>
+              <span class="font-bold text-purple-600 text-lg">15% /tahun</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white/80 backdrop-blur-xl rounded-2xl p-8 border border-white/20 hover:-translate-y-2 transition-all duration-300 shadow-xl hover:shadow-2xl"
+        >
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center mr-4"
+            >
+              <span class="text-white text-xl">🏗️</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800">Spesifikasi</h3>
+          </div>
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center py-3 border-b border-gray-100"
+            >
+              <span class="text-gray-600 font-medium">Luas Tanah</span>
+              <span class="font-bold text-gray-800 text-lg">120 m²</span>
+            </div>
+            <div
+              class="flex justify-between items-center py-3 border-b border-gray-100"
+            >
+              <span class="text-gray-600 font-medium">Luas Bangunan</span>
+              <span class="font-bold text-gray-800 text-lg">85 m²</span>
+            </div>
+            <div class="flex justify-between items-center py-3">
+              <span class="text-gray-600 font-medium">Kamar Tidur</span>
+              <span class="font-bold text-gray-800 text-lg">3 + 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div
+        class="mt-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl p-1"
+      >
+        <div
+          class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 text-center"
+        >
+          <h3
+            class="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4"
+          >
+            Tertarik dengan Properti Ini?
+          </h3>
+          <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            Jangan lewatkan kesempatan memiliki rumah impian Anda. Hubungi agen
+            profesional kami untuk informasi lebih lanjut dan jadwalkan viewing.
+          </p>
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto"
+          >
+            <button
+              class="bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 px-8 rounded-xl font-bold hover:from-green-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              📱 WhatsApp
+            </button>
+            <button
+              class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-4 px-8 rounded-xl font-bold hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              📞 Telepon
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 mt-16 bg-gray-800 text-white py-8">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <div class="flex items-center justify-center space-x-3 mb-4">
+          <div
+            class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center"
+          >
+            <span class="text-white font-bold">P</span>
+          </div>
+          <span class="font-bold text-xl">PropertyHub</span>
+        </div>
+        <p class="text-gray-400">© 2025 PropertyHub. Semua hak dilindungi.</p>
+      </div>
+    </footer>
+  </body>
+</html>

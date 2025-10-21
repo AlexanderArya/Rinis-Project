@@ -1,0 +1,59 @@
+{# templates/navbar/user_navbar.html #}
+<header class="bg-white shadow-lg sticky top-0 z-50">
+  <nav class="container mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <div class="bg-primary p-2 rounded-lg">
+          <i class="fas fa-home text-white text-xl"></i>
+        </div>
+        <span class="text-2xl font-bold text-gray-800">PropertyHub</span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#home" class="text-gray-700 hover:text-primary transition duration-300">Beranda</a>
+        <a href="#properties" class="text-gray-700 hover:text-primary transition duration-300">Properti</a>
+        <a href="#about" class="text-gray-700 hover:text-primary transition duration-300">Tentang</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition duration-300">Kontak</a>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">
+          Lihat Properti
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars text-2xl text-gray-700"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+      <div class="flex flex-col space-y-4">
+        <a href="#home" class="text-gray-700 hover:text-primary transition duration-300">Beranda</a>
+        <a href="#properties" class="text-gray-700 hover:text-primary transition duration-300">Properti</a>
+        <a href="#about" class="text-gray-700 hover:text-primary transition duration-300">Tentang</a>
+        <a href="#contact" class="text-gray-700 hover:text-primary transition duration-300">Kontak</a>
+        <div class="flex flex-col space-y-2 pt-4">
+          <button class="px-4 py-2 text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition duration-300">
+            Hubungi Kami
+          </button>
+          <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300">
+            Lihat Properti
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  function toggleMobileMenu() {
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (mobileMenu) mobileMenu.classList.toggle("hidden");
+  }
+</script>

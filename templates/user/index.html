@@ -1,0 +1,329 @@
+{# templates/index.html #}
+{% extends "base.html" %}
+
+{% block title %}PropertyHub - Temukan Rumah Impian Anda{% endblock %}
+
+{% block content %}
+  <!-- Hero Banner -->
+  <section id="home" class="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div class="relative container mx-auto px-4 py-20 md:py-32">
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Temukan Rumah <span class="text-secondary">Impian Anda</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-gray-200">
+          Koleksi properti premium dengan lokasi strategis dan harga terbaik di Jakarta dan sekitarnya
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button class="px-8 py-4 bg-secondary text-white rounded-lg hover:bg-yellow-600 transition duration-300 font-semibold">
+            <i class="fas fa-search mr-2"></i>Cari Properti Sekarang
+          </button>
+          <button class="px-8 py-4 border-2 border-white text-white rounded-lg hover:bg-white hover:text-blue-900 transition duration-300 font-semibold">
+            <i class="fas fa-play mr-2"></i>Lihat Video Tour
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,64L48,69.3C96,75,192,85,288,85.3C384,85,480,75,576,64C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64V120H1392C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120H0V64Z" fill="#f9fafb"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Search & Filter -->
+  <section class="bg-white py-8 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="bg-gray-50 rounded-2xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi</label>
+            <select id="filterLokasi" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option>Pilih Lokasi</option>
+              <option>Jakarta Selatan</option>
+              <option>Jakarta Pusat</option>
+              <option>Tangerang</option>
+              <option>Bekasi</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Properti</label>
+            <select id="filterTipe" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option>Semua Tipe</option>
+              <option>Rumah</option>
+              <option>Apartemen</option>
+              <option>Townhouse</option>
+              <option>Villa</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Rentang Harga</label>
+            <select id="filterHarga" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option>Semua Harga</option>
+              <option>&lt; 1 Miliar</option>
+              <option>1-3 Miliar</option>
+              <option>3-5 Miliar</option>
+              <option>&gt; 5 Miliar</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Kamar Tidur</label>
+            <select id="filterKamar" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option>Semua</option>
+              <option>1 Kamar</option>
+              <option>2 Kamar</option>
+              <option>3 Kamar</option>
+              <option>4+ Kamar</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button id="btnFilter" class="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+  <i class="fas fa-search mr-2"></i>Cari
+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Property Listings -->
+  <section id="properties" class="py-16">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Properti Unggulan</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Temukan pilihan properti terbaik dengan lokasi strategis dan fasilitas lengkap
+        </p>
+      </div>
+
+<div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+      <div class="text-center mt-12">
+        <button class="px-8 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition duration-300 font-semibold">
+          Lihat Semua Properti
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="bg-primary py-16 text-white">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div><div class="text-4xl font-bold mb-2">500+</div><div class="text-blue-200">Properti Tersedia</div></div>
+        <div><div class="text-4xl font-bold mb-2">250+</div><div class="text-blue-200">Klien Puas</div></div>
+        <div><div class="text-4xl font-bold mb-2">15+</div><div class="text-blue-200">Tahun Pengalaman</div></div>
+        <div><div class="text-4xl font-bold mb-2">50+</div><div class="text-blue-200">Agen Profesional</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Modal -->
+<div id="videoModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-6">
+  <div class="max-w-6xl w-full mx-auto">
+    <div class="relative bg-transparent rounded-lg overflow-hidden">
+      <button id="closeVideoBtn" class="absolute top-3 right-3 z-50 bg-black/50 text-white rounded-full p-2 hover:bg-black/70">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 8.586l4.95-4.95a1 1 0 111.414 1.414L11.414 10l4.95 4.95a1 1 0 11-1.414 1.414L10 11.414l-4.95 4.95a1 1 0 11-1.414-1.414L8.586 10 3.636 5.05A1 1 0 015.05 3.636L10 8.586z" clip-rule="evenodd"/>
+        </svg>
+      </button>
+
+      <!-- modal content: diperbesar height -->
+      <div class="w-full bg-black rounded-lg overflow-auto max-h-[90vh]">
+        <video id="tourVideo" class="w-full h-[85vh] max-h-full object-contain" controls playsinline>
+          <source src="https://www.youtube.com/watch?v=gpHLhjkMR0E" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating contact button -->
+<button id="btnContact" aria-label="Hubungi Kami" class="fixed right-6 bottom-6 z-40 flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-full shadow-lg">
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.95 11.95 0 0012 0C5.373 0 0 5.373 0 12c0 2.115.554 4.09 1.61 5.86L0 24l6.39-1.61A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12 0-3.21-1.25-6.19-3.48-8.52zM12 21.6a9.6 9.6 0 01-5.14-1.43l-.36-.21-3.8.96.99-3.7-.23-.37A9.6 9.6 0 1121.6 12 9.6 9.6 0 0112 21.6z"/><path d="M17.22 14.05l-1.29-.37a1 1 0 00-1.02.28l-.66.71a8.44 8.44 0 01-3.96-3.95l.7-.66a1 1 0 00.28-1.02l-.37-1.29A1 1 0 009.6 6.6L8.1 7.05a3 3 0 00-1.03 4.2l.55.77a11.43 11.43 0 005.88 5.88l.77.55a3 3 0 004.2-1.03l.45-1.5a1 1 0 00-.9-1.87z"/></svg>
+  Hubungi Kami
+</button>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4">
+  <div class="w-full max-w-md mx-auto">
+    <div class="bg-gray-900 rounded-xl overflow-hidden shadow-xl">
+      <div class="p-4 flex items-center justify-between border-b border-gray-800">
+        <h3 class="text-lg font-semibold text-white">Hubungi Kami</h3>
+        <button id="closeContact" class="text-gray-400 hover:text-white p-2 rounded-md" aria-label="Tutup modal">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="bg-green-600 rounded-full w-12 h-12 flex items-center justify-center">
+            <!-- WhatsApp logo (white) -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.95 11.95 0 0012 0C5.373 0 0 5.373 0 12c0 2.115.554 4.09 1.61 5.86L0 24l6.39-1.61A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12 0-3.21-1.25-6.19-3.48-8.52zM12 21.6a9.6 9.6 0 01-5.14-1.43l-.36-.21-3.8.96.99-3.7-.23-.37A9.6 9.6 0 1121.6 12 9.6 9.6 0 0112 21.6z"/><path d="M17.22 14.05l-1.29-.37a1 1 0 00-1.02.28l-.66.71a8.44 8.44 0 01-3.96-3.95l.7-.66a1 1 0 00.28-1.02l-.37-1.29A1 1 0 009.6 6.6L8.1 7.05a3 3 0 00-1.03 4.2l.55.77a11.43 11.43 0 005.88 5.88l.77.55a3 3 0 004.2-1.03l.45-1.5a1 1 0 00-.9-1.87z"/></svg>
+          </div>
+
+          <div>
+            <p class="text-sm text-gray-300">Chat dengan tim support kami via WhatsApp</p>
+            <p class="text-sm text-gray-400">Nomor: <span class="font-medium text-white">+62895396578951</span></p>
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <a id="waLink" href="https://wa.me/62895396578951?text=Halo%20saya%20ingin%20bertanya" target="_blank" rel="noopener noreferrer" class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.95 11.95 0 0012 0C5.373 0 0 5.373 0 12c0 2.115.554 4.09 1.61 5.86L0 24l6.39-1.61A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12 0-3.21-1.25-6.19-3.48-8.52zM12 21.6a9.6 9.6 0 01-5.14-1.43l-.36-.21-3.8.96.99-3.7-.23-.37A9.6 9.6 0 1121.6 12 9.6 9.6 0 0112 21.6z"/><path d="M17.22 14.05l-1.29-.37a1 1 0 00-1.02.28l-.66.71a8.44 8.44 0 01-3.96-3.95l.7-.66a1 1 0 00.28-1.02l-.37-1.29A1 1 0 009.6 6.6L8.1 7.05a3 3 0 00-1.03 4.2l.55.77a11.43 11.43 0 005.88 5.88l.77.55a3 3 0 004.2-1.03l.45-1.5a1 1 0 00-.9-1.87z"/></svg>
+            Chat Sekarang
+          </a>
+
+          <button id="closeContact2" class="px-4 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  // Ambil data dari backend (Flask)
+  const properties = JSON.parse('{{ data_json | safe }}');
+function generatePropertyCards(list) {
+  const grid = document.getElementById("propertyGrid");
+  grid.innerHTML = "";
+
+  list.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden group";
+    
+    // buat innerHTML dengan detail tambahan
+    card.innerHTML = `
+      <div class="relative overflow-hidden">
+        <img src="data:image/jpeg;base64,${p.image_properties}" alt="${p.nama_properti}" class="w-full h-64 object-cover group-hover:scale-110 transition duration-500">
+        ${p.featured ? '<div class="absolute top-4 left-4 bg-secondary px-3 py-1 rounded-full text-white text-sm font-semibold">Featured</div>' : ""}
+      </div>
+      <div class="p-6">
+        <h3 class="text-xl font-bold text-gray-800 mb-2">${p.nama_properti}</h3>
+        <div class="flex items-center text-gray-600 mb-2">
+          <i class="fas fa-map-marker-alt mr-2"></i><span>${p.alamat_properti}</span>
+        </div>
+        <div class="flex items-center text-gray-600 mb-2">
+          <i class="fas fa-expand-arrows-alt mr-2"></i><span>Luas Tanah: ${p.besar_properti} m²</span>
+        </div>
+        <div class="flex items-center text-gray-600 mb-2">
+          <i class="fas fa-arrows-alt-h mr-2"></i><span>Lebar: ${p.lebar_properti} m</span>
+        </div>
+        <div class="text-gray-700 mb-4">
+          <p>${p.deskripsi_properti}</p>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="text-2xl font-bold text-primary">Rp ${Number(p.harga).toLocaleString()}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  generatePropertyCards(properties);
+
+  document.getElementById("btnFilter").addEventListener("click", () => {
+    const lokasi = document.getElementById("filterLokasi").value;
+    const tipe = document.getElementById("filterTipe").value;
+    const harga = document.getElementById("filterHarga").value;
+    const kamar = document.getElementById("filterKamar").value;
+
+    const filtered = properties.filter(p => {
+      let ok = true;
+
+      // Lokasi
+      if (lokasi && lokasi !== "Pilih Lokasi" && !p.alamat_properti.includes(lokasi)) ok = false;
+
+      // Tipe
+      if (tipe && tipe !== "Semua Tipe" && p.tipe_properti !== tipe) ok = false;
+
+      // Harga
+      if (harga && harga !== "Semua Harga") {
+        const h = Number(p.harga)/1000000000; // harga dalam miliar
+        if (harga === "< 1 Miliar" && h >= 1) ok = false;
+        if (harga === "1-3 Miliar" && (h < 1 || h > 3)) ok = false;
+        if (harga === "3-5 Miliar" && (h < 3 || h > 5)) ok = false;
+        if (harga === "> 5 Miliar" && h <= 5) ok = false;
+      }
+
+      // Kamar
+      const k = p.jumlah_kamar || 0;
+      if (kamar && kamar !== "Semua") {
+        if (kamar === "4+ Kamar" && k < 4) ok = false;
+        else if (kamar !== "4+ Kamar") {
+          const kamarNum = parseInt(kamar);
+          if (k !== kamarNum) ok = false;
+        }
+      }
+
+      return ok;
+    });
+
+    generatePropertyCards(filtered);
+  });
+});
+
+ (function() {
+    const btn = document.querySelector('section#home button:nth-child(2)'); // tombol Lihat Video Tour
+    const modal = document.getElementById('videoModal');
+    const closeBtn = document.getElementById('closeVideoBtn');
+    const video = document.getElementById('tourVideo');
+
+    if (!btn || !modal || !video) return;
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.documentElement.style.overflow = 'hidden';
+      try { video.currentTime = 0; video.play(); } catch(e){ console.warn(e); }
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      try { video.pause(); video.currentTime = 0; } catch(e){}
+      document.documentElement.style.overflow = '';
+    }
+
+    btn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    });
+  })();
+
+(function(){
+  const btn = document.getElementById('btnContact');
+  const modal = document.getElementById('contactModal');
+  const closePrimary = document.getElementById('closeContact');
+  const closeSecondary = document.getElementById('closeContact2');
+
+  if (!btn || !modal) return console.warn('Contact modal elements not found');
+
+  function openModal(){
+    modal.classList.remove('hidden'); modal.classList.add('flex');
+    document.documentElement.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    modal.classList.add('hidden'); modal.classList.remove('flex');
+    document.documentElement.style.overflow = '';
+  }
+
+  btn.addEventListener('click', openModal);
+  if (closePrimary) closePrimary.addEventListener('click', closeModal);
+  if (closeSecondary) closeSecondary.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
+})();
+</script>
+{% endblock %}

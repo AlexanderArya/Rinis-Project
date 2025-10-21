@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - PropertyHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3B82F6',
+                        'primary-dark': '#1D4ED8',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Error Type Selector (for demo purposes) -->
+        <div class="mb-8 text-center animate-fade-in">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Pilih Jenis Error untuk Preview</h1>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="showError('404')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">404 - Not Found</button>
+                <button onclick="showError('403')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">403 - Forbidden</button>
+                <button onclick="showError('500')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">500 - Server Error</button>
+                <button onclick="showError('503')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">503 - Maintenance</button>
+                <button onclick="showError('network')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">Network Error</button>
+                <button onclick="showError('timeout')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-300">Timeout Error</button>
+            </div>
+        </div>
+
+        <!-- Error Display Container -->
+        <div id="errorContainer" class="min-h-screen flex items-center justify-center">
+            <!-- Default 404 Error will be shown initially -->
+        </div>
+    </main>
+
+    <!-- Floating Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-2xl animate-bounce-slow"></div>
+    </div>
+
+    <script>
+        // Error configurations
+        const errorConfigs = {
+            '404': {
+                title: '404 - Halaman Tidak Ditemukan',
+                description: 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman telah dipindahkan atau URL yang Anda masukkan salah.',
+                icon: 'fas fa-search',
+                iconColor: 'text-gray-400',
+                bgColor: 'bg-gray-100',
+                suggestions: [
+                    'Periksa kembali URL yang Anda masukkan',
+                    'Kembali ke halaman utama',
+                    'Gunakan menu navigasi untuk mencari halaman'
+                ]
+            },
+            '403': {
+                title: '403 - Akses Ditolak',
+                description: 'Anda tidak memiliki izin untuk mengakses halaman ini. Silakan login dengan akun yang memiliki akses yang sesuai.',
+                icon: 'fas fa-lock',
+                iconColor: 'text-red-400',
+                bgColor: 'bg-red-100',
+                suggestions: [
+                    'Login dengan akun yang memiliki akses',
+                    'Hubungi administrator untuk izin akses',
+                    'Kembali ke halaman yang diizinkan'
+                ]
+            },
+            '500': {
+                title: '500 - Server Error',
+                description: 'Terjadi kesalahan pada server kami. Tim teknis sedang bekerja untuk memperbaiki masalah ini sesegera mungkin.',
+                icon: 'fas fa-server',
+                iconColor: 'text-red-500',
+                bgColor: 'bg-red-100',
+                suggestions: [
+                    'Coba refresh halaman dalam beberapa menit',
+                    'Hubungi support jika masalah berlanjut',
+                    'Gunakan fitur lain yang tersedia'
+                ]
+            },
+            '503': {
+                title: '503 - Sedang Maintenance',
+                description: 'Website sedang dalam proses pemeliharaan untuk meningkatkan kualitas layanan. Mohon kembali lagi dalam beberapa saat.',
+                icon: 'fas fa-tools',
+                iconColor: 'text-yellow-500',
+                bgColor: 'bg-yellow-100',
+                suggestions: [
+                    'Kembali lagi dalam 15-30 menit',
+                    'Follow social media kami untuk update',
+                    'Hubungi support untuk informasi lebih lanjut'
+                ]
+            },
+            'network': {
+                title: 'Network Error - Koneksi Bermasalah',
+                description: 'Koneksi internet Anda bermasalah atau server tidak dapat dijangkau. Periksa koneksi internet Anda dan coba lagi.',
+                icon: 'fas fa-wifi',
+                iconColor: 'text-orange-500',
+                bgColor: 'bg-orange-100',
+                suggestions: [
+                    'Periksa koneksi internet Anda',
+                    'Coba refresh halaman',
+                    'Hubungi provider internet jika masalah berlanjut'
+                ]
+            },
+            'timeout': {
+                title: 'Timeout Error - Request Terlalu Lama',
+                description: 'Permintaan Anda membutuhkan waktu terlalu lama untuk diproses. Server mungkin sedang sibuk atau koneksi lambat.',
+                icon: 'fas fa-clock',
+                iconColor: 'text-purple-500',
+                bgColor: 'bg-purple-100',
+                suggestions: [
+                    'Coba lagi dalam beberapa saat',
+                    'Periksa kecepatan internet Anda',
+                    'Gunakan fitur yang lebih ringan'
+                ]
+            }
+        };
+
+        // Show specific error
+        function showError(type) {
+            const config = errorConfigs[type];
+            if (!config) return;
+
+            const container = document.getElementById('errorContainer');
+            
+            container.innerHTML = `
+                <div class="text-center max-w-2xl mx-auto animate-slide-up">
+                    <!-- Error Icon -->
+                    <div class="mb-8">
+                        <div class="w-32 h-32 mx-auto ${config.bgColor} rounded-full flex items-center justify-center mb-6 animate-float">
+                            <i class="${config.icon} text-6xl ${config.iconColor}"></i>
+                        </div>
+                    </div>
+
+                    <!-- Error Content -->
+                    <div class="mb-8">
+                        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">${config.title}</h1>
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">${config.description}</p>
+                    </div>
+
+                    <!-- Suggestions -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Yang Dapat Anda Lakukan:</h3>
+                        <div class="bg-white rounded-xl shadow-sm border p-6">
+                            <ul class="text-left space-y-3">
+                                ${config.suggestions.map(suggestion => `
+                                    <li class="flex items-start space-x-3">
+                                        <i class="fas fa-chevron-right text-primary mt-1 text-sm"></i>
+                                        <span class="text-gray-700">${suggestion}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col md:flex-row gap-4 justify-center">
+                        <button onclick="goHome()" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transform hover:scale-105 transition-all duration-300 font-medium">
+                            <i class="fas fa-home mr-2"></i>
+                            Kembali ke Beranda
+                        </button>
+                        <button onclick="goBack()" class="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transform hover:scale-105 transition-all duration-300 font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Halaman Sebelumnya
+                        </button>
+                        <button onclick="contactSupport()" class="px-8 py-3 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transform hover:scale-105 transition-all duration-300 font-medium">
+                            <i class="fas fa-headset mr-2"></i>
+                            Hubungi Support
+                        </button>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="mt-12 p-6 bg-gray-100 rounded-xl">
+                        <p class="text-sm text-gray-600 mb-2">
+                            <i class="fas fa-info-circle mr-2 text-primary"></i>
+                            Butuh bantuan lebih lanjut?
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-4 text-sm">
+                            <a href="mailto:support@propertyhub.com" class="text-primary hover:text-primary-dark transition duration-300">
+                                <i class="fas fa-envelope mr-1"></i>
+                                support@propertyhub.com
+                            </a>
+                            <a href="tel:+6281234567890" class="text-primary hover:text-primary-dark transition duration-300">
+                                <i class="fas fa-phone mr-1"></i>
+                                +62 812-3456-7890
+                            </a>
+                            <a href="#" class="text-primary hover:text-primary-dark transition duration-300">
+                                <i class="fab fa-whatsapp mr-1"></i>
+                                WhatsApp Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Navigation functions
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById("mobileMenu");
+            if (mobileMenu) mobileMenu.classList.toggle("hidden");
+        }
+
+        function goHome() {
+            // In real implementation, redirect to homepage
+            window.location.href = '/';
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goHome();
+            }
+        }
+
+        function contactSupport() {
+            // In real implementation, open support chat or contact form
+            alert('Redirecting to support center...');
+        }
+
+        // Auto-detect error type from URL or show 404 by default
+        function initializePage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorType = urlParams.get('error') || '404';
+            showError(errorType);
+        }
+
+        // Show random error message for demo
+        function showRandomError() {
+            const errorTypes = Object.keys(errorConfigs);
+            const randomType = errorTypes[Math.floor(Math.random() * errorTypes.length)];
+            showError(randomType);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            
+            // Add some interactive effects
+            addInteractiveEffects();
+        });
+
+        function addInteractiveEffects() {
+            // Add click effect to buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    e.target.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        e.target.style.transform = '';
+                    }, 150);
+                }
+            });
+
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case 'Home':
+                        goHome();
+                        break;
+                    case 'Escape':
+                        goBack();
+                        break;
+                    case 'F5':
+                        e.preventDefault();
+                        location.reload();
+                        break;
+                }
+            });
+        }
+
+        // Error reporting function (for production)
+        function reportError(errorType, userAgent, timestamp) {
+            // In production, send error report to analytics
+            console.log('Error reported:', {
+                type: errorType,
+                userAgent: userAgent,
+                timestamp: timestamp,
+                url: window.location.href
+            });
+        }
+
+        // Auto-retry function for network errors
+        function autoRetry(maxRetries = 3) {
+            let retryCount = 0;
+            const retryInterval = setInterval(() => {
+                if (retryCount >= maxRetries) {
+                    clearInterval(retryInterval);
+                    return;
+                }
+                
+                // Attempt to reload or retry the failed operation
+                console.log(`Retry attempt ${retryCount + 1}/${maxRetries}`);
+                retryCount++;
+                
+                // In real implementation, retry the failed request
+                // fetch(originalRequest).then(...).catch(...)
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

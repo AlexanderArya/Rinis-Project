@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - PropertyHub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#3B82F6',
+              'primary-dark': '#1D4ED8',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.8s ease-in-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'pulse-slow': 'pulse 3s infinite',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-gray-900 text-white">
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+      <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex items-center justify-center px-4 py-12 relative z-10">
+      <div class="max-w-md w-full space-y-8">
+        
+        <!-- Logo Section -->
+        <div class="text-center">
+          <div class="flex items-center justify-center space-x-3 mb-8">
+            <!-- House Icon -->
+            <div class="w-12 h-12 bg-gradient-to-r from-primary to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              PropertyHub
+            </h1>
+          </div>
+          <h2 class="text-2xl font-semibold text-gray-300 mb-2">Selamat Datang Kembali</h2>
+          <p class="text-gray-400">Masuk ke akun Anda untuk melanjutkan</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700 backdrop-blur-sm">
+          <form id="loginForm" class="space-y-6">
+            
+            <!-- Email Field -->
+            <div class="space-y-2">
+              <label for="email" class="block text-sm font-medium text-gray-300">
+                Email
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                  </svg>
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                  placeholder="Masukkan email Anda"
+                />
+              </div>
+              <div id="emailError" class="text-red-400 text-sm hidden">
+                <span class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  Email tidak boleh kosong
+                </span>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="space-y-2">
+              <label for="password" class="block text-sm font-medium text-gray-300">
+                Password
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  class="w-full pl-10 pr-12 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                  placeholder="Masukkan password Anda"
+                />
+                <button
+                  type="button"
+                  id="togglePassword"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300 transition-colors duration-200"
+                >
+                  <svg id="eyeIcon" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                </button>
+              </div>
+              <div id="passwordError" class="text-red-400 text-sm hidden">
+                <span class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  Password tidak boleh kosong
+                </span>
+              </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input
+                  id="remember"
+                  name="remember"
+                  type="checkbox"
+                  class="h-4 w-4 text-primary bg-gray-700 border-gray-600 rounded focus:ring-primary focus:ring-2 transition-colors duration-200"
+                />
+                <label for="remember" class="ml-2 block text-sm text-gray-300">
+                  Ingat saya
+                </label>
+              </div>
+              <div class="text-sm">
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">
+                  Lupa password?
+                </a>
+              </div>
+            </div>
+
+            <!-- Login Button -->
+            <div>
+              <button
+                type="submit"
+                id="loginBtn"
+                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transform hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <svg id="loginIcon" class="h-5 w-5 text-blue-200 group-hover:text-blue-100 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                  </svg>
+                  <svg id="loadingIcon" class="h-5 w-5 text-blue-200 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+                    <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" class="opacity-75"></path>
+                  </svg>
+                </span>
+                <span id="loginText" src="/dashboard">Masuk</span>
+              </button>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden bg-green-900/50 border border-green-500 text-green-300 px-4 py-3 rounded-xl">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Login berhasil! Mengalihkan...
+              </div>
+            </div>
+          </form>
+
+          <!-- Sign Up Link -->
+          <div class="mt-8 text-center">
+            <p class="text-gray-400">
+              Belum punya akun? 
+              <a href="#" class="text-primary hover:text-blue-400 font-medium transition-colors duration-300">
+                Daftar sekarang
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-gray-500 text-sm">
+          <p>&copy; 2025 PropertyHub. Semua hak dilindungi.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Form elements
+      const loginForm = document.getElementById('loginForm');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      const loginBtn = document.getElementById('loginBtn');
+      const loginText = document.getElementById('loginText');
+      const loginIcon = document.getElementById('loginIcon');
+      const loadingIcon = document.getElementById('loadingIcon');
+      const successMessage = document.getElementById('successMessage');
+      const togglePassword = document.getElementById('togglePassword');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      // Toggle password visibility
+      togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        if (type === 'password') {
+          eyeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          `;
+        } else {
+          eyeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
+          `;
+        }
+      });
+
+      // Clear error when user starts typing
+      emailInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          hideError('email');
+          this.classList.remove('border-red-500', 'focus:ring-red-500');
+          this.classList.add('border-gray-600', 'focus:ring-primary');
+        }
+      });
+
+      passwordInput.addEventListener('input', function() {
+        if (this.value.trim() !== '') {
+          hideError('password');
+          this.classList.remove('border-red-500', 'focus:ring-red-500');
+          this.classList.add('border-gray-600', 'focus:ring-primary');
+        }
+      });
+
+      // Show error function
+      function showError(field, message) {
+        const errorElement = document.getElementById(field + 'Error');
+        const inputElement = document.getElementById(field);
+        
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        inputElement.classList.remove('border-gray-600', 'focus:ring-primary');
+        inputElement.classList.add('border-red-500', 'focus:ring-red-500');
+      }
+
+      // Hide error function
+      function hideError(field) {
+        const errorElement = document.getElementById(field + 'Error');
+        errorElement.classList.add('hidden');
+      }
+
+      // Validate email format
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      // Form validation and submission
+      loginForm.addEventListener('submit',async function(e) {
+        e.preventDefault();
+        
+        // Reset previous errors
+        hideError('email');
+        hideError('password');
+        successMessage.classList.add('hidden');
+        
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+        let hasError = false;
+
+        // Validate email
+        if (email === '') {
+          showError('email', 'Email tidak boleh kosong');
+          hasError = true;
+        } else if (!isValidEmail(email)) {
+          showError('email', 'Format email tidak valid');
+          hasError = true;
+        }
+
+        // Validate password
+        if (password === '') {
+          showError('password', 'Password tidak boleh kosong');
+          hasError = true;
+        } else if (password.length < 6) {
+          showError('password', 'Password minimal 6 karakter');
+          hasError = true;
+        }
+
+        // If no errors, proceed with login simulation
+        if (!hasError) {
+          // Show loading state
+          loginBtn.disabled = true;
+          loginText.textContent = 'Memproses...';
+          
+          try {
+            const response = await fetch('/loginUser', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email, password })
+            });
+          
+            const result = await response.json();
+            console.log(result); // bisa ganti dengan redirect atau tampil pesan sukses
+          
+          } catch (error) {
+            console.error('Login gagal:', error);
+          } finally {
+            loginBtn.disabled = false;
+            loginText.textContent = 'Login';
+          }
+
+          
+          loginIcon.classList.add('hidden');
+          loadingIcon.classList.remove('hidden');
+          
+
+          // Simulate API call
+          setTimeout(() => {
+            // Show success message
+            successMessage.classList.remove('hidden');
+            loginText.textContent = 'Berhasil!';
+            
+            // Simulate redirect after 2 seconds
+            setTimeout(() => {
+              // In real app, redirect to dashboard
+              alert('Login berhasil! Akan diarahkan ke dashboard...');
+              
+              // Reset form for demo
+              loginForm.reset();
+              loginBtn.disabled = false;
+              loginText.textContent = 'Masuk';
+              loginIcon.classList.remove('hidden');
+              loadingIcon.classList.add('hidden');
+              successMessage.classList.add('hidden');
+              window.location.href = '/dashboard';
+            }, 2000);
+          }, 1500);
+        }
+      });
+
+      // Add focus effects for better UX
+      const inputs = document.querySelectorAll('input[type="email"], input[type="password"]');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+      });
+    </script>
+  </body>
+</html>

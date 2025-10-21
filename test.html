@@ -1,0 +1,51 @@
+<!-- Tabel daftar properti (responsive) -->
+<div class="bg-white shadow rounded-lg overflow-hidden">
+  <div class="overflow-x-auto"> <!-- Scroll horizontal saat layar kecil -->
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Properti</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Harga</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Besar</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lebar</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {% for property in properties %}
+        <tr>
+          <td class="px-6 py-4 text-sm text-gray-900">{{ property.id_properties }}</td>
+          <td class="px-6 py-4 text-sm text-gray-900">{{ property.nama_properti }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ property.tipe_properti }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ property.alamat_properti }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">Rp {{ "{:,.0f}".format(property.harga) }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ property.deskripsi_properti }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ property.besar_properti }}</td>
+          <td class="px-6 py-4 text-sm text-gray-500">{{ property.lebar_properti }}</td>
+          <td class="px-6 py-4 text-right text-sm">
+            <a href="{{ url_for('management_admin.edit_property', id=property.id_properties) }}"
+               class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+            <form action="{{ url_for('management_admin.delete_property', id=property.id_properties) }}"
+                  method="post" class="inline">
+              <button type="submit" class="text-red-600 hover:text-red-900"
+                      onclick="return confirm('Yakin ingin hapus properti ini?')">
+                Hapus
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
+            Belum ada properti yang ditambahkan.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
