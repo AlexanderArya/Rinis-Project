@@ -4,73 +4,274 @@
 {% block title %}Manajemen Properti - PropertyHub{% endblock %}
 
 {% block head_extra %}
-  <!-- Tambahan CSS khusus halaman ini kalau ada -->
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <style>
+    /* Custom DataTables Styling */
+    .dataTables_wrapper {
+      padding: 1.5rem;
+    }
+    
+    .dataTables_filter input {
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+    }
+    
+    .dataTables_length select {
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+    }
+    
+    table.dataTable thead th {
+      border-bottom: 2px solid #e5e7eb !important;
+      font-weight: 600 !important;
+      color: #374151 !important;
+      padding: 1rem !important;
+    }
+    
+    table.dataTable tbody td {
+      padding: 1rem !important;
+      vertical-align: middle !important;
+    }
+    
+    table.dataTable tbody tr {
+      transition: all 0.2s ease;
+    }
+    
+    table.dataTable tbody tr:hover {
+      background-color: #f9fafb !important;
+      transform: scale(1.001);
+    }
+    
+    .dataTables_info {
+      padding-top: 1rem;
+      color: #6b7280;
+    }
+    
+    .dataTables_paginate {
+      padding-top: 1rem;
+    }
+    
+    .dataTables_paginate .paginate_button {
+      padding: 0.5rem 0.75rem;
+      margin: 0 0.25rem;
+      border-radius: 0.375rem;
+      border: 1px solid #e5e7eb;
+      background: white;
+      transition: all 0.2s;
+    }
+    
+    .dataTables_paginate .paginate_button:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+    
+    .dataTables_paginate .paginate_button.current {
+      background: #3b82f6 !important;
+      color: white !important;
+      border-color: #3b82f6;
+    }
+    
+    .dataTables_paginate .paginate_button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Badge Styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-blue {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    /* Action Button Styles */
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    
+    .action-btn-edit {
+      color: #2563eb;
+      background-color: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    
+    .action-btn-edit:hover {
+      background-color: #dbeafe;
+      border-color: #93c5fd;
+      transform: translateY(-1px);
+    }
+    
+    .action-btn-delete {
+      color: #dc2626;
+      background-color: #fef2f2;
+      border-color: #fecaca;
+    }
+    
+    .action-btn-delete:hover {
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      transform: translateY(-1px);
+    }
+
+    /* Price Cell Styling */
+    .price-cell {
+      font-weight: 600;
+      color: #059669;
+      font-size: 0.95rem;
+    }
+
+    /* ID Badge */
+    .id-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.25rem 0.625rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    /* Description Cell */
+    .description-cell {
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    /* Dimension Cell */
+    .dimension-cell {
+      font-family: 'Courier New', monospace;
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+  </style>
 {% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold text-gray-800 mb-6">Manajemen Properti</h1>
-
-  <!-- Tombol tambah properti (hanya seller/admin) -->
-  {% if session['user']['role'] in ['seller', 'admin'] %}
-  <div class="mb-4">
-    <button onclick="openModal()"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
-  + Tambah Properti
-</button>
+  <!-- Header Section -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Manajemen Properti</h1>
+        <p class="text-gray-600">Kelola dan pantau semua properti Anda</p>
+      </div>
+      
+      {% if session['user']['role'] in ['seller', 'admin'] %}
+      <button onclick="openModal()"
+          class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        Tambah Properti
+      </button>
+      {% endif %}
+    </div>
   </div>
-  {% endif %}
 
-  <!-- Tabel daftar properti -->
-  <div class="bg-white shadow rounded-lg overflow-hidden">
+  <!-- Stats Cards (Optional) -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Total Properti</p>
+          <p id="totalProperties" class="text-2xl font-bold text-gray-900">0</p>
+        </div>
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Total Nilai</p>
+          <p id="totalValue" class="text-2xl font-bold text-gray-900">Rp 0</p>
+        </div>
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Tipe Properti</p>
+          <p id="totalTypes" class="text-2xl font-bold text-gray-900">0</p>
+        </div>
+        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow duration-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">Rata-rata Harga</p>
+          <p id="avgPrice" class="text-2xl font-bold text-gray-900">Rp 0</p>
+        </div>
+        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
     <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Properti</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Harga</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Besar</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lebar</th>
-          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        {% for property in properties %}
-        <tr>
-          <td class="px-6 py-4 text-sm text-gray-900">{{ property.id_properties }}</td>
-          <td class="px-6 py-4 text-sm text-gray-900">{{ property.nama_properti }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">{{ property.tipe_properti }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">{{ property.alamat_properti }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">Rp {{ "{:,.0f}".format(property.harga) }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">{{ property.deskripsi_properti }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">{{ property.besar_properti }}</td>
-          <td class="px-6 py-4 text-sm text-gray-500">{{ property.lebar_properti }}</td>
-          <td class="px-6 py-4 text-right text-sm">
-            <a href="{{ url_for('management_admin.edit_property', id=property.id_properties) }}"
-               class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-            <form action="{{ url_for('management_admin.delete_property', id=property.id_properties) }}"
-                  method="post" class="inline">
-              <button type="submit" class="text-red-600 hover:text-red-900"
-                      onclick="return confirm('Yakin ingin hapus properti ini?')">
-                Hapus
-              </button>
-            </form>
-          </td>
-        </tr>
-        {% else %}
-        <tr>
-          <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
-            Belum ada properti yang ditambahkan.
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+      <table id="propertyTable" class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">ID</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Nama Properti</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Tipe</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Alamat</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Harga</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Deskripsi</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Besar</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Lebar</th>
+            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -79,76 +280,108 @@
      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300">
   <div id="modalContent"
        class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 border border-gray-300 
-              transform transition-all duration-300 scale-95 opacity-0 translate-y-10">
+              transform transition-all duration-300 scale-95 opacity-0 translate-y-10 max-h-[90vh] overflow-y-auto">
     
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-xl font-bold text-gray-800">Tambah Properti</h2>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Tambah Properti Baru</h2>
+      </div>
       <button type="button" onclick="closeModal()"
-              class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+              class="text-gray-400 hover:text-gray-600 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors duration-200">&times;</button>
     </div>
 
     <!-- Form -->
     <form action="/tambahData" method="post" class="space-y-5">
       <div>
-        <label class="block text-sm font-medium text-gray-700">Nama Properti</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Properti</label>
         <input type="text" name="nama_properti" 
-               class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                      focus:ring-blue-500 focus:border-blue-500" required>
+               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+               placeholder="Contoh: Rumah Mewah Jakarta Selatan"
+               required>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Tipe Properti</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Properti</label>
         <input type="text" name="tipe_properti" 
-               class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                      focus:ring-blue-500 focus:border-blue-500" required>
+               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+               placeholder="Contoh: Rumah, Apartemen, Tanah"
+               required>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Alamat</label>
-        <textarea name="alamat_properti" rows="2" 
-                  class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                         focus:ring-blue-500 focus:border-blue-500" required></textarea>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
+        <textarea name="alamat_properti" rows="3" 
+                  class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none" 
+                  placeholder="Masukkan alamat lengkap properti"
+                  required></textarea>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Harga</label>
-        <input type="number" name="harga" 
-               class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                      focus:ring-blue-500 focus:border-blue-500" required>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Harga</label>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">Rp</span>
+          <input type="number" name="harga" 
+                 class="w-full border border-gray-300 rounded-lg shadow-sm pl-12 pr-4 py-2.5 
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+                 placeholder="0"
+                 required>
+        </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
-        <textarea name="deskripsi_properti" rows="3" 
-                  class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                         focus:ring-blue-500 focus:border-blue-500"></textarea>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
+        <textarea name="deskripsi_properti" rows="4" 
+                  class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
+                  placeholder="Deskripsikan fitur dan keunggulan properti..."></textarea>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700">Besar Properti</label>
-          <input type="text" name="besar_properti" 
-                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                        focus:ring-blue-500 focus:border-blue-500">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Besar Properti</label>
+          <div class="relative">
+            <input type="text" name="besar_properti" 
+                   class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
+                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                   placeholder="0">
+            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m²</span>
+          </div>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">Lebar Properti</label>
-          <input type="text" name="lebar_properti" 
-                 class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-3 py-2 
-                        focus:ring-blue-500 focus:border-blue-500">
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Lebar Properti</label>
+          <div class="relative">
+            <input type="text" name="lebar_properti" 
+                   class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
+                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                   placeholder="0">
+            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m</span>
+          </div>
         </div>
       </div>
 
       <!-- Footer -->
-      <div class="flex justify-end space-x-3 pt-4">
+      <div class="flex justify-end gap-3 pt-6 border-t">
         <button type="button" onclick="closeModal()"
-                class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium">
+                class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
           Batal
         </button>
         <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
-          Simpan
+                class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Simpan Properti
+          </span>
         </button>
       </div>
     </form>
@@ -158,28 +391,161 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
-  function openModal() {
-    const modal = document.getElementById('modalTambah');
-    const content = document.getElementById('modalContent');
+$(document).ready(function () {
+  const table = $('#propertyTable').DataTable({
+    ajax: {
+      url: "/api/getAllData",
+      dataSrc: "",
+      complete: function(data) {
+        // Update stats after data loaded
+        updateStats(data.responseJSON);
+      }
+    },
+    columns: [
+      { 
+        data: "id_properties",
+        render: function(data) {
+          return `<span class="id-badge">#${data}</span>`;
+        }
+      },
+      { 
+        data: "nama_properti",
+        render: function(data) {
+          return `<div class="font-medium text-gray-900">${data}</div>`;
+        }
+      },
+      { 
+        data: "tipe_properti",
+        render: function(data) {
+          return `<span class="badge badge-blue">${data}</span>`;
+        }
+      },
+      { 
+        data: "alamat_properti",
+        render: function(data) {
+          return `<div class="text-sm text-gray-600" title="${data}">${data.length > 30 ? data.substring(0, 30) + '...' : data}</div>`;
+        }
+      },
+      { 
+        data: "harga",
+        render: function (data) {
+          return `<span class="price-cell">Rp ${data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</span>`;
+        }
+      },
+      { 
+        data: "deskripsi_properti",
+        render: function(data) {
+          const desc = data || '-';
+          return `<div class="description-cell" title="${desc}">${desc.length > 40 ? desc.substring(0, 40) + '...' : desc}</div>`;
+        }
+      },
+      { 
+        data: "besar_properti",
+        render: function(data) {
+          return `<span class="dimension-cell">${data || '-'} m²</span>`;
+        }
+      },
+      { 
+        data: "lebar_properti",
+        render: function(data) {
+          return `<span class="dimension-cell">${data || '-'} m</span>`;
+        }
+      },
+      {
+        data: null,
+        orderable: false,
+        render: function (data, type, row) {
+          return `
+            <div class="flex items-center justify-center gap-2">
+              <a href="/editProperty/${row.id_properties}" 
+                class="action-btn action-btn-edit">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Edit
+              </a>
+              <button onclick="deleteProperty('${row.id_properties}')"
+                class="action-btn action-btn-delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                Hapus
+              </button>
+            </div>
+          `;
+        }
+      }
+    ],
+    language: {
+      search: "Cari:",
+      lengthMenu: "Tampilkan _MENU_ data per halaman",
+      info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ properti",
+      infoEmpty: "Tidak ada data",
+      infoFiltered: "(difilter dari _MAX_ total properti)",
+      zeroRecords: "Tidak ada data yang cocok",
+      paginate: {
+        first: "Pertama",
+        last: "Terakhir",
+        next: "Selanjutnya",
+        previous: "Sebelumnya"
+      }
+    },
+    pageLength: 10,
+    responsive: true
+  });
 
-    modal.classList.remove('hidden'); // tampilkan modal backdrop
-    setTimeout(() => {
-      content.classList.remove('opacity-0', 'translate-y-10', 'scale-95');
-      content.classList.add('opacity-100', 'translate-y-0', 'scale-100');
-    }, 10); // delay sedikit agar transition jalan
+  // Update statistics
+  function updateStats(data) {
+    if (!data || !data.length) return;
+    
+    // Total Properties
+    $('#totalProperties').text(data.length);
+    
+    // Total Value
+    const totalValue = data.reduce((sum, item) => sum + parseFloat(item.harga || 0), 0);
+    $('#totalValue').text('Rp ' + totalValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+    
+    // Unique Types
+    const uniqueTypes = [...new Set(data.map(item => item.tipe_properti))].length;
+    $('#totalTypes').text(uniqueTypes);
+    
+    // Average Price
+    const avgPrice = totalValue / data.length;
+    $('#avgPrice').text('Rp ' + Math.round(avgPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
   }
+});
 
-  function closeModal() {
-    const modal = document.getElementById('modalTambah');
-    const content = document.getElementById('modalContent');
+function deleteProperty(id) {
+  if (!confirm("Yakin ingin hapus properti ini?")) return;
+  $.post(`/deleteProperty/${id}`, () => {
+    $("#propertyTable").DataTable().ajax.reload();
+  });
+}
 
-    content.classList.add('opacity-0', 'translate-y-10', 'scale-95');
-    content.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+// Modal functions
+function openModal() {
+  const modal = document.getElementById('modalTambah');
+  const content = document.getElementById('modalContent');
+  
+  modal.classList.remove('hidden');
+  setTimeout(() => {
+    content.classList.remove('scale-95', 'opacity-0', 'translate-y-10');
+    content.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+  }, 10);
+}
 
-    setTimeout(() => {
-      modal.classList.add('hidden'); // sembunyikan setelah animasi selesai
-    }, 300); // sesuai durasi transition
-  }
+function closeModal() {
+  const modal = document.getElementById('modalTambah');
+  const content = document.getElementById('modalContent');
+  
+  content.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+  content.classList.add('scale-95', 'opacity-0', 'translate-y-10');
+  
+  setTimeout(() => {
+    modal.classList.add('hidden');
+  }, 300);
+}
 </script>
 {% endblock %}

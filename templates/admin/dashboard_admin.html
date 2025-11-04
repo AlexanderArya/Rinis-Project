@@ -5,33 +5,174 @@
 {% block head_extra %}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <style>
-    .card-hover { transition: all 0.3s ease; }
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --primary-dark: #4338ca;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #06b6d4;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #cbd5e1;
+    }
+    
+    .card-hover { 
+      transition: all 0.3s ease; 
+    }
+    
     .card-hover:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
-                  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                  0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
-    .fade-in { animation: fadeIn 0.6s ease-in; }
+    
+    .fade-in { 
+      animation: fadeIn 0.6s ease-in; 
+    }
+    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
     }
+    
     .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     }
+    
     .stats-card {
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.05) 100%
-      );
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+    
+    .pulse-animation { 
+      animation: pulse 2s infinite; 
+    }
+    
+    @keyframes pulse {
+      0%, 100% { 
+        opacity: 1; 
+      }
+      50% { 
+        opacity: 0.8; 
+      }
+    }
+    
+    .glass {
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .pulse-animation { animation: pulse 2s infinite; }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.8; }
+    
+    .activity-item {
+      border-left: 3px solid var(--primary);
+      padding-left: 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    .activity-item:hover {
+      background-color: rgba(79, 70, 229, 0.05);
+      transform: translateX(5px);
+    }
+    
+    .property-card {
+      transition: all 0.3s ease;
+    }
+    
+    .property-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .metric-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .quick-action-btn {
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-action-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    }
+    
+    .quick-action-btn:hover svg {
+      color: white;
+    }
+    
+    .section-title {
+      position: relative;
+      padding-bottom: 0.75rem;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-primary {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+    }
+    
+    .badge-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+    
+    .badge-warning {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
     }
   </style>
 {% endblock %}
@@ -42,26 +183,65 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="text-center">
         <h1 class="text-4xl font-bold mb-4">{{ greeting }}, {{ data }}</h1>
-        <p class="text-lg text-blue-200 mb-8">
+        <p class="text-lg text-indigo-100 mb-8">
           Kelola dan pantau seluruh aktivitas properti dalam satu tempat
         </p>
 
-        <div class="flex justify-center space-x-4">
-          <div class="rounded-lg p-6 text-center glass w-56">
-            <div class="text-3xl font-bold" id="TotalProperti"></div>
-            <div class="text-sm text-blue-200">Total Properti</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="stats-card p-6 card-hover">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-gray-800" id="TotalProperti"></div>
+                <div class="text-sm text-gray-500">Total Properti</div>
+              </div>
+            </div>
           </div>
-          <div class="rounded-lg p-6 text-center glass w-56">
-            <div class="text-3xl font-bold" id="Tersedia"></div>
-            <div class="text-sm text-blue-200">Tersedia</div>
+          
+          <div class="stats-card p-6 card-hover">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-gray-800" id="Tersedia"></div>
+                <div class="text-sm text-gray-500">Tersedia</div>
+              </div>
+            </div>
           </div>
-          <div class="rounded-lg p-6 text-center glass w-56">
-            <div class="text-3xl font-bold" id="Terjual"></div>
-            <div class="text-sm text-blue-200">Terjual Bulan Ini</div>
+          
+          <div class="stats-card p-6 card-hover">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-gray-800" id="Terjual"></div>
+                <div class="text-sm text-gray-500">Terjual Bulan Ini</div>
+              </div>
+            </div>
           </div>
-          <div class="rounded-lg p-6 text-center glass w-56">
-            <div class="text-3xl font-bold" id="Disewakan"></div>
-            <div class="text-sm text-blue-200">Disewa Bulan Ini</div>
+          
+          <div class="stats-card p-6 card-hover">
+            <div class="flex items-center">
+              <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-gray-800" id="Disewakan"></div>
+                <div class="text-sm text-gray-500">Disewa Bulan Ini</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -70,499 +250,158 @@
 
   <!-- Main Dashboard Content -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    {# Semua isi dashboard cards, charts, recent activities, dll
-       Copy persis dari kode awal dashboard #}
-
-    <!-- Quick Stats Cards -->
-  <div class="flex flex-wrap justify-center gap-6 mb-8">
-      <!-- Total Properties -->
-      <div class="card-hover fade-in glass rounded-lg p-6">
-        <div class="flex items-center">
-          <div class="w-12 h-12 bg-blue-800 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/>
-            </svg>
-          </div>
-          <div class="ml-4">
-            <div class="text-2xl font-bold" id="totalProperties">127</div>
-            <div class="text-sm text-gray-300">Total Properti</div>
-          </div>
-        </div>
-        <div class="mt-4 flex items-center text-sm">
-          <span class="text-green-400 font-medium">+12%</span>
-          <span class="text-gray-400 ml-2">dari bulan lalu</span>
-        </div>
-      </div>
-
-     
-        <!-- Available Properties -->
-        <div
-          class="card-hover fade-in glass rounded-lg p-6"
-        >
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-green-800 rounded-lg flex items-center justify-center">
-              <svg
-                class="w-6 h-6 text-green-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4"
-                />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <div class="text-2xl font-bold" id="availableProperties">89</div>
-              <div class="text-sm text-gray-300">Properti Tersedia</div>
-            </div>
-          </div>
-          <div class="mt-4 flex items-center text-sm">
-            <span class="text-green-400 font-medium">70%</span>
-            <span class="text-gray-400 ml-2">dari total</span>
-          </div>
-        </div>
-
-        <!-- Sold Properties -->
-        <div
-          class="card-hover fade-in glass rounded-lg p-6"
-        >
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-red-800 rounded-lg flex items-center justify-center">
-              <svg
-                class="w-6 h-6 text-red-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 11V7a4 4 0 00-8 0v4"
-                />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <div class="text-2xl font-bold" id="soldProperties">23</div>
-              <div class="text-sm text-gray-300">Terjual</div>
-            </div>
-          </div>
-          <div class="mt-4 flex items-center text-sm">
-            <span class="text-red-400 font-medium">18%</span>
-            <span class="text-gray-400 ml-2">dari total</span>
-          </div>
-        </div>
-
-        <!-- Total Revenue -->
-        <div
-          class="card-hover fade-in glass rounded-lg p-6"
-        >
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-yellow-800 rounded-lg flex items-center justify-center">
-              <svg
-                class="w-6 h-6 text-yellow-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2"
-                />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <div class="text-2xl font-bold" id="totalRevenue">15200000</div>
-              <div class="text-sm text-gray-300">Total Disewa</div>
-            </div>
-          </div>
-          <div class="mt-4 flex items-center text-sm">
-            <span class="text-green-400 font-medium">+8%</span>
-            <span class="text-gray-400 ml-2">dari bulan lalu</span>
-          </div>
-        </div>
-        <!-- Total Revenue -->
-        <div
-          class="card-hover fade-in glass rounded-lg p-6"
-        >
-          <div class="flex items-center">
-            <div class="w-12 h-12 bg-yellow-800 rounded-lg flex items-center justify-center">
-              <svg
-                class="w-6 h-6 text-yellow-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2"
-                />
-              </svg>
-            </div>
-            <div class="ml-4">
-              <div class="text-2xl font-bold" id="totalRevenue">15200000</div>
-              <div class="text-sm text-gray-300">Total Disewa</div>
-            </div>
-          </div>
-          <div class="mt-4 flex items-center text-sm">
-            <span class="text-green-400 font-medium">+8%</span>
-            <span class="text-gray-400 ml-2">dari bulan lalu</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <!-- Property Status Chart -->
-        <div
-          class="glass rounded-lg p-6 fade-in"
-        >
-          <h3 class="text-lg font-semibold mb-4 text-gray-100">
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Property Status Chart -->
+      <div class="metric-card p-6 fade-in">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 section-title">
             Status Properti
           </h3>
-          <div class="relative h-64">
-            <canvas id="statusChart"></canvas>
-          </div>
+          <div class="text-sm text-gray-500">Bulan Ini</div>
         </div>
+        <div class="relative h-64">
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
 
-        <!-- Property Types Chart -->
-        <div
-          class="glass rounded-lg p-6 fade-in"
-        >
-          <h3 class="text-lg font-semibold mb-4 text-gray-100">
+      <!-- Property Types Chart -->
+      <div class="metric-card p-6 fade-in">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 section-title">
             Jenis Properti
           </h3>
-          <div class="relative h-64">
-            <canvas id="typeChart"></canvas>
-          </div>
+          <div class="text-sm text-gray-500">Total</div>
+        </div>
+        <div class="relative h-64">
+          <canvas id="typeChart"></canvas>
         </div>
       </div>
+    </div>
 
-      <!-- Sales Trend Chart -->
-      <div
-        class="glass rounded-lg p-6 mb-8 fade-in"
-      >
-        <h3 class="text-lg font-semibold mb-4 text-gray-100">
+    <!-- Sales Trend Chart -->
+    <div class="metric-card p-6 mb-8 fade-in">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 section-title">
           Tren Penjualan 6 Bulan Terakhir
         </h3>
-        <div class="relative h-80">
-          <canvas id="salesChart"></canvas>
-        </div>
+        <div class="text-sm text-gray-500">Dalam Juta Rupiah</div>
       </div>
-
-      <!-- Recent Activities & Top Properties -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <!-- Recent Activities -->
-        <div
-          class="glass rounded-lg p-6 fade-in"
-        >
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-100">
-              Aktivitas Terbaru
-            </h3>
-            <button class="text-primary text-sm font-medium">
-              Lihat Semua
-            </button>
-          </div>
-          <div class="space-y-4 text-gray-200">
-            <div class="flex items-start space-x-3">
-              <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-              <div class="flex-1">
-                <p class="text-sm">
-                  Properti "Villa Puncak Bogor" berhasil terjual
-                </p>
-                <p class="text-xs text-gray-400">2 jam yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-              <div class="flex-1">
-                <p class="text-sm">
-                  Properti baru "Apartemen Luxury Sudirman" ditambahkan
-                </p>
-                <p class="text-xs text-gray-400">5 jam yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-              <div class="flex-1">
-                <p class="text-sm">
-                  Status "Ruko Strategis BSD" diubah menjadi disewa
-                </p>
-                <p class="text-xs text-gray-400">1 hari yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
-              <div class="flex-1">
-                <p class="text-sm">
-                  Data properti "Rumah Minimalis Jakarta" diperbarui
-                </p>
-                <p class="text-xs text-gray-400">2 hari yang lalu</p>
-              </div>
-            </div>
-            <div class="flex items-start space-x-3">
-              <div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
-              <div class="flex-1">
-                <p class="text-sm">
-                  Properti "Tanah Kavling Bekasi" dihapus dari sistem
-                </p>
-                <p class="text-xs text-gray-400">3 hari yang lalu</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Top Properties -->
-        <div
-          class="glass rounded-lg p-6 fade-in"
-        >
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-100">
-              Properti Termahal
-            </h3>
-            <button class="text-primary text-sm font-medium">
-              Lihat Semua
-            </button>
-          </div>
-          <div class="space-y-4 text-gray-200">
-            <div class="flex items-center space-x-3 p-3 rounded-lg bg-gray-800/50">
-              <img
-                src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=60&h=60&fit=crop"
-                alt="Villa"
-                class="w-12 h-12 rounded-lg object-cover"
-              />
-              <div class="flex-1">
-                <h4 class="text-sm font-medium text-gray-100">
-                  Villa Puncak Bogor
-                </h4>
-                <p class="text-sm text-primary font-semibold">
-                  Rp 2.500.000.000
-                </p>
-              </div>
-              <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
-                Terjual
-              </span>
-            </div>
-            <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
-              <img
-                src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=60&h=60&fit=crop"
-                alt="Ruko"
-                class="w-12 h-12 rounded-lg object-cover"
-              />
-              <div class="flex-1">
-                <h4 class="text-sm font-medium text-gray-100">
-                  Ruko Strategis BSD
-                </h4>
-                <p class="text-sm text-primary font-semibold">
-                  Rp 1.800.000.000
-                </p>
-              </div>
-              <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                Disewa
-              </span>
-            </div>
-            <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
-              <img
-                src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=60&h=60&fit=crop"
-                alt="Apartemen"
-                class="w-12 h-12 rounded-lg object-cover"
-              />
-              <div class="flex-1">
-                <h4 class="text-sm font-medium text-gray-100">
-                  Apartemen Luxury Sudirman
-                </h4>
-                <p class="text-sm text-primary font-semibold">
-                  Rp 1.200.000.000
-                </p>
-              </div>
-              <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                Tersedia
-              </span>
-            </div>
-            <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50">
-              <img
-                src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=60&h=60&fit=crop"
-                alt="Rumah"
-                class="w-12 h-12 rounded-lg object-cover"
-              />
-              <div class="flex-1">
-                <h4 class="text-sm font-medium text-gray-100">
-                  Rumah Minimalis Modern Jakarta
-                </h4>
-                <p class="text-sm text-primary font-semibold">
-                  Rp 750.000.000
-                </p>
-              </div>
-              <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                Tersedia
-              </span>
-            </div>
-          </div>
-        </div>
+      <div class="relative h-80">
+        <canvas id="salesChart"></canvas>
       </div>
+    </div>
 
-      <!-- Performance Metrics -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="glass rounded-lg p-6 fade-in text-center">
-          <div class="w-16 h-16 bg-green-800 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              class="w-8 h-8 text-green-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-2 text-gray-100">
-            Tingkat Konversi
+    <!-- Recent Activities & Top Properties -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Recent Activities -->
+      <div class="metric-card p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 section-title">
+            Aktivitas Terbaru
           </h3>
-          <div class="text-3xl font-bold text-green-400 mb-2">18.3%</div>
-          <p class="text-sm text-gray-400">Dari inquiry ke penjualan</p>
-        </div>
-
-        <div class="glass rounded-lg p-6 fade-in text-center">
-  <div class="w-16 h-16 bg-green-800 rounded-full flex items-center justify-center mx-auto mb-4">
-    <svg
-      class="w-8 h-8 text-green-300"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <!-- Ikon cart (penjualan) -->
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z"
-      />
-    </svg>
-  </div>
-  <h3 class="text-lg font-semibold mb-2 text-gray-4 00">
-    Total Penjualan
-  </h3>
-  <div class="text-3xl font-bold text-green-400 mb-2" id="totalJual"></div>
-  <p class="text-sm text-gray-400">Transaksi berhasil</p>
-</div>
-
-
-        <div class="glass rounded-lg p-6 fade-in text-center">
-          <div class="w-16 h-16 bg-purple-800 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg
-              class="w-8 h-8 text-purple-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
+          <button class="text-indigo-600 text-sm font-medium hover:underline flex items-center">
+            Lihat Semua
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-2 text-gray-400">
-            Views Bulan Ini
-          </h3>
-          <div class="text-3xl font-bold text-purple-400 mb-2" id="TotalView"></div>
-          <p class="text-sm text-gray-400">Total view properti</p>
+          </button>
         </div>
+        <div id="log_user" class="space-y-4"></div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="glass rounded-lg p-6 fade-in">
-        <h3 class="text-lg font-semibold text-gray-100 mb-4">Aksi Cepat</h3>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-700 hover:border-primary hover:bg-primary/5 transition duration-200">
-            <svg
-              class="w-8 h-8 text-gray-300 mb-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4v16m8-8H4"
-              />
+      <!-- Top Properties -->
+      <div class="metric-card p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-800 section-title">
+            Properti Unggulan
+          </h3>
+          <button class="text-indigo-600 text-sm font-medium hover:underline flex items-center">
+            Lihat Semua
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="text-sm font-medium text-gray-200">Tambah Properti</span>
-          </button>
-
-          <button class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-700 hover:border-green-500 hover:bg-green-50 transition duration-200">
-            <svg
-              class="w-8 h-8 text-gray-300 mb-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 17v-2m3 2v-4m3 4v-6"
-              />
-            </svg>
-            <span class="text-sm font-medium text-gray-200">Generate Laporan</span>
-          </button>
-
-          <button class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-700 hover:border-yellow-500 hover:bg-yellow-50 transition duration-200">
-            <svg
-              class="w-8 h-8 text-gray-300 mb-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100-4m0 4v2m0-6V4"
-              />
-            </svg>
-            <span class="text-sm font-medium text-gray-200">Pengaturan</span>
-          </button>
-
-          <button class="flex flex-col items-center p-4 rounded-lg border-2 border-dashed border-gray-700 hover:border-purple-500 hover:bg-purple-50 transition duration-200">
-            <svg
-              class="w-8 h-8 text-gray-300 mb-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span class="text-sm font-medium text-gray-200">Bantuan</span>
           </button>
         </div>
+        <div class="space-y-4" id="propertiTermahal"></div>
+      </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="metric-card p-6 text-center">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2 text-gray-700">
+          Tingkat Konversi
+        </h3>
+        <div class="text-3xl font-bold text-green-600 mb-2" id="presentaseId"></div>
+        <p class="text-sm text-gray-500">Dari inquiry ke penjualan</p>
+      </div>
+
+      <div class="metric-card p-6 text-center">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9h14l-2-9M10 21a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2 text-gray-700">
+          Total Penjualan
+        </h3>
+        <div class="text-3xl font-bold text-blue-600 mb-2" id="totalJual"></div>
+        <p class="text-sm text-gray-500">Transaksi berhasil</p>
+      </div>
+
+      <div class="metric-card p-6 text-center">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2 text-gray-700">
+          Views Bulan Ini
+        </h3>
+        <div class="text-3xl font-bold text-purple-600 mb-2" id="TotalView"></div>
+        <p class="text-sm text-gray-500">Total view properti</p>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="metric-card p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-6 section-title">Aksi Cepat</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button class="quick-action-btn flex flex-col items-center p-4">
+          <svg class="w-8 h-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span class="text-sm font-medium">Tambah Properti</span>
+        </button>
+
+        <button class="quick-action-btn flex flex-col items-center p-4">
+          <svg class="w-8 h-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-sm font-medium">Generate Laporan</span>
+        </button>
+
+        <button class="quick-action-btn flex flex-col items-center p-4">
+          <svg class="w-8 h-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-sm font-medium">Pengaturan</span>
+        </button>
+
+        <button class="quick-action-btn flex flex-col items-center p-4">
+          <svg class="w-8 h-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-sm font-medium">Bantuan</span>
+        </button>
       </div>
     </div>
   </div>
@@ -570,40 +409,123 @@
 
 {% block scripts %}
 <script>
-
   $(document).ready(function() {
     fetchData();
     let response = $.ajax({
-  url: "/api/totalViews",
-  type: "GET",
-  dataType: "json",
-  success: function(response) {
-    console.log(response)
-    $('#TotalView').text(response.view_count);
-    $('#totalJual').text(response.Total_Jual);
-    }})
-  })
+      url: "/api/totalViews",
+      type: "GET",
+      dataType: "json",
+      success: function(response) {
+        $('#TotalView').text(response.view_count);
+        $('#totalJual').text(response.Total_Jual);
+        $('#presentaseId').text(response.presentase.toFixed(2) +'%');
+      }
+    });
   
+    function hargaTermahal() {
+      $.ajax({
+        url: "/api/hargaMahal",
+        type: "GET",
+        dataType: "json",
+        success: function (res) {
+          console.log(res);
+          $("#propertiTermahal").empty();
+
+          res.forEach(item => {
+            const card = `
+            <div class="property-card flex items-center space-x-4 p-4 rounded-lg bg-white border border-gray-100 hover:border-indigo-100 transition-all">
+              <img
+                src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=60&h=60&fit=crop"
+                alt="${item.nama_properti}"
+                class="w-14 h-14 rounded-lg object-cover"
+              />
+              <div class="flex-1">
+                <h4 class="text-sm font-semibold text-gray-800">
+                  ${item.nama_properti}
+                </h4>
+                <p class="text-sm text-indigo-600 font-bold">
+                  Rp ${item.harga.toLocaleString('id-ID')}
+                </p>
+              </div>
+              <span class="badge badge-primary">
+                ${item.tipe_properti}
+              </span>
+            </div>`;
+            
+            $("#propertiTermahal").append(card);
+          });
+        }
+      });
+    }
+
+    function loadLogs() {
+      $.ajax({
+        url: "/api/logs",
+        type: "GET",
+        dataType: "json",
+        success: function(res) {
+          $("#log_user").empty();
+
+          if (!Array.isArray(res) || res.length === 0) {
+            $("#log_user").html(`
+              <div class="text-center py-8 text-gray-400">
+                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <p class="text-sm">Belum ada aktivitas.</p>
+              </div>
+            `);
+            return;
+          }
+
+          res.forEach(item => {
+            const namaHalaman = item.page_name || "Tidak ada nama";
+            const waktu = item.terakhir ? item.terakhir : "Belum pernah dilihat";
+            const views = item.view_count ?? 0;
+
+            const logHtml = `
+            <div class="activity-item">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-sm font-medium text-gray-800">${namaHalaman}</p>
+                  <p class="text-xs text-gray-500 mt-1">${waktu}</p>
+                </div>
+                <span class="badge badge-success">${views} views</span>
+              </div>
+            </div>`;
+
+            $("#log_user").append(logHtml);
+          });
+        },
+        error: function(err) {
+          console.error("Gagal mengambil data log:", err);
+        }
+      });
+    }
+    
+    hargaTermahal();
+    loadLogs();
+    setInterval(loadLogs, 6000);
+  });
+
   // Done 
   async function fetchData() {
-      let response = await $.ajax({
-  url: "/DataDashboard",
-  type: "GET",
-  dataType: "json",
-  success: function(response) {
-
-    // isi elemen HTML
-    $('#Disewakan').text(response.data.disewakan);
-    $('#Terjual').text(response.data.terjual);
-    $('#Tersedia').text(response.data.tersedia);
-    $('#TotalProperti').text(response.data.total_properti);
-  },
-  error: function(xhr, status, error) {
-    alert("Terjadi error: " + error);
+    let response = await $.ajax({
+      url: "/DataDashboard",
+      type: "GET",
+      dataType: "json",
+      success: function(response) {
+        // isi elemen HTML
+        $('#Disewakan').text(response.data.disewakan);
+        $('#Terjual').text(response.data.terjual);
+        $('#Tersedia').text(response.data.tersedia);
+        $('#TotalProperti').text(response.data.total_properti);
+      },
+      error: function(xhr, status, error) {
+        alert("Terjadi error: " + error);
+      }
+    });
   }
-});
-
-    }
   
   function formatCurrency(n){
     if (isNaN(n)) return n;
@@ -611,151 +533,160 @@
   }
 
   async function createStatusChart() {
-  const el = document.getElementById('statusChart');
-  if (!el || typeof Chart === 'undefined') return;
+    const el = document.getElementById('statusChart');
+    if (!el || typeof Chart === 'undefined') return;
 
-  const ctx = el.getContext('2d');
+    const ctx = el.getContext('2d');
 
-  try {
-    // Ganti URL ini dengan endpoint API kamu yang mengembalikan data status properti
-    const response = await fetch('/api/available');
-    const data = await response.json();
-    
-    console.log(data)
+    try {
+      const response = await fetch('/api/available');
+      const data = await response.json();
+      
+      const labels = data.map(item => item.tipe_penjualan);
+      const values = data.map(item => item.jumlah);
 
-    // Ambil label dan data dari response
-    const labels = data.map(item => item.tipe_penjualan);
-    const values = data.map(item => item.jumlah);
-
-    // Buat chart
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: ['#10B981', '#EF4444', '#3B82F6']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom' }
-        }
-      }
-    });
-  } catch (error) {
-    console.error('Gagal memuat data chart status:', error);
-  }
-}
-
-  async function createTypeChart() {
-  const el = document.getElementById('typeChart');
-  if (!el || typeof Chart === 'undefined') return;
-  const ctx = el.getContext('2d');
-
-  try {
-    // 🔹 Ambil chart data
-    const response = await fetch('/api/type_chart');
-    const data = await response.json();
-   
-    const labels = data.map(item => item.tipe_properti);
-    const values = data.map(item => item.jumlah);
-
-    new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: ['#6366F1', '#7C3AED', '#06B6D4', '#F59E0B']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'bottom' }
-        }
-      }
-    });
-
-  } catch (error) {
-    console.error("Gagal memuat data chart:", error);
-  }
-}
-
-  async function createSalesChart() {
-  const el = document.getElementById('salesChart');
-  if (!el || typeof Chart === 'undefined') return;
-
-  const ctx = el.getContext('2d');
-
-  try {
-    // Endpoint API kamu
-    const response = await fetch('/api/sales');
-    const data = await response.json();
-
-    console.log(data);
-
-    // Data dari backend (contoh):
-    // [
-    //   { bulan: 'September', total_transaksi: 8 },
-    //   { bulan: 'October', total_transaksi: 2 }
-    // ]
-
-    // Ambil label dan nilai sesuai field yang dikembalikan
-    const labels = data.map(item => item.bulan);
-    const values = data.map(item => item.total_transaksi);
-
-    // Buat chart line
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Total Transaksi',
-          data: values,
-          borderColor: '#3B82F6',
-          backgroundColor: 'rgba(59,130,246,0.08)',
-          fill: true,
-          tension: 0.3
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: ['#10B981', '#EF4444', '#3B82F6', '#F59E0B']
+          }]
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Jumlah Transaksi'
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { 
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 20
+              }
             }
           },
-          x: {
-            title: {
-              display: true,
-              text: 'Bulan'
+          cutout: '65%'
+        }
+      });
+    } catch (error) {
+      console.error('Gagal memuat data chart status:', error);
+    }
+  }
+
+  async function createTypeChart() {
+    const el = document.getElementById('typeChart');
+    if (!el || typeof Chart === 'undefined') return;
+    const ctx = el.getContext('2d');
+
+    try {
+      const response = await fetch('/api/type_chart');
+      const data = await response.json();
+     
+      const labels = data.map(item => item.tipe_properti);
+      const values = data.map(item => item.jumlah);
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: ['#6366F1', '#7C3AED', '#06B6D4', '#F59E0B', '#EC4899']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { 
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 20
+              }
             }
           }
         }
-      }
-    });
+      });
 
-  } catch (error) {
-    console.error('Gagal memuat data chart penjualan:', error);
+    } catch (error) {
+      console.error("Gagal memuat data chart:", error);
+    }
   }
-}
 
+  async function createSalesChart() {
+    const el = document.getElementById('salesChart');
+    if (!el || typeof Chart === 'undefined') return;
+
+    const ctx = el.getContext('2d');
+
+    try {
+      const response = await fetch('/api/sales');
+      const data = await response.json();
+
+      const labels = data.map(item => item.bulan);
+      const values = data.map(item => item.total_transaksi);
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Total Transaksi',
+            data: values,
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.05)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#4f46e5',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              title: {
+                display: true,
+                text: 'Jumlah Transaksi'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              title: {
+                display: true,
+                text: 'Bulan'
+              }
+            }
+          }
+        }
+      });
+
+    } catch (error) {
+      console.error('Gagal memuat data chart penjualan:', error);
+    }
+  }
 
   function initializeCharts(){
     if (typeof Chart === 'undefined') return;
-    createStatusChart(); createTypeChart(); createSalesChart();
+    createStatusChart(); 
+    createTypeChart(); 
+    createSalesChart();
   }
 
   document.addEventListener("DOMContentLoaded", function(){

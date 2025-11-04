@@ -53,11 +53,23 @@ def getStatsData():
 
 @dashboard_admin.route('/api/totalViews')
 def getView():
-    view_count, transaksi_count = ViewerPage.get_view_count('/', session['user']['id_user'])
+    view_count, transaksi_count, presentase = ViewerPage.get_view_count('/', session['user']['id_user'])
 
     dataTotal = {
         "view_count":view_count,
-        "Total_Jual":transaksi_count
+        "Total_Jual":transaksi_count,
+        "presentase":presentase
     }
-   
+    
     return jsonify(dataTotal)
+
+@dashboard_admin.route('/api/logs')
+def getDataViewer():
+    data = LandingPageModel.get_viewer_logs()
+    return jsonify(data)
+
+@dashboard_admin.route('/api/hargaMahal')
+def hargaMahal():
+    data = LandingPageModel.harga_termahal()
+    print(data)
+    return jsonify(data)
