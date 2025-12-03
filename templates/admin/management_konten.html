@@ -297,94 +297,93 @@
     </div>
 
     <!-- Form -->
-    <form action="/tambahData" method="post" class="space-y-5">
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Properti</label>
-        <input type="text" name="nama_properti" 
-               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-               placeholder="Contoh: Rumah Mewah Jakarta Selatan"
-               required>
-      </div>
+   <!-- Formulir Anda, hanya button yang akan dikendalikan oleh AJAX -->
+<form id="formTambahProperti" class="space-y-5">
+  <div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Properti</label>
+    <input type="text" name="nama_properti" id="nama_properti" 
+           class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+           placeholder="Contoh: Rumah Mewah Jakarta Selatan" required>
+  </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Properti</label>
-        <input type="text" name="tipe_properti" 
-               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
-                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-               placeholder="Contoh: Rumah, Apartemen, Tanah"
-               required>
-      </div>
+  <div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Properti</label>
+    <input type="text" name="tipe_properti" id="tipe_properti" 
+           class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+           placeholder="Contoh: Rumah, Apartemen, Tanah" required>
+  </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
-        <textarea name="alamat_properti" rows="3" 
-                  class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
-                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none" 
-                  placeholder="Masukkan alamat lengkap properti"
-                  required></textarea>
-      </div>
+  <div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat</label>
+    <textarea name="alamat_properti" id="alamat_properti" rows="3" 
+              class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none" 
+              placeholder="Masukkan alamat lengkap properti" required></textarea>
+  </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Harga</label>
-        <div class="relative">
-          <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">Rp</span>
-          <input type="number" name="harga" 
-                 class="w-full border border-gray-300 rounded-lg shadow-sm pl-12 pr-4 py-2.5 
-                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                 placeholder="0"
-                 required>
-        </div>
-      </div>
+  <div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Harga</label>
+    <div class="relative">
+      <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">Rp</span>
+      <input type="number" name="harga" id="harga" 
+             class="w-full border border-gray-300 rounded-lg shadow-sm pl-12 pr-4 py-2.5 
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
+             placeholder="0" required>
+    </div>
+  </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
-        <textarea name="deskripsi_properti" rows="4" 
-                  class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
-                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
-                  placeholder="Deskripsikan fitur dan keunggulan properti..."></textarea>
-      </div>
+  <div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi</label>
+    <textarea name="deskripsi_properti" id="deskripsi_properti" rows="4" 
+              class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 
+                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 resize-none"
+              placeholder="Deskripsikan fitur dan keunggulan properti..."></textarea>
+  </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">Besar Properti</label>
-          <div class="relative">
-            <input type="text" name="besar_properti" 
-                   class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
-                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                   placeholder="0">
-            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m²</span>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">Lebar Properti</label>
-          <div class="relative">
-            <input type="text" name="lebar_properti" 
-                   class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
-                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                   placeholder="0">
-            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m</span>
-          </div>
-        </div>
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-semibold text-gray-700 mb-2">Besar Properti</label>
+      <div class="relative">
+        <input type="text" name="besar_properti" id="besar_properti" 
+               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
+                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+               placeholder="0">
+        <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m²</span>
       </div>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold text-gray-700 mb-2">Lebar Properti</label>
+      <div class="relative">
+        <input type="text" name="lebar_properti" id="lebar_properti" 
+               class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2.5 pr-12
+                      focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+               placeholder="0">
+        <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">m</span>
+      </div>
+    </div>
+  </div>
 
-      <!-- Footer -->
-      <div class="flex justify-end gap-3 pt-6 border-t">
-        <button type="button" onclick="closeModal()"
-                class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
-          Batal
-        </button>
-        <button type="submit"
-                class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            Simpan Properti
-          </span>
-        </button>
-      </div>
-    </form>
+  <!-- Footer -->
+  <div class="flex justify-end gap-3 pt-6 border-t">
+    <button type="button" onclick="closeModal()"
+            class="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
+      Batal
+    </button>
+    <button type="submit"
+            class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+      <span class="flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        Simpan Properti
+      </span>
+    </button>
+  </div>
+</form>
+
+
   </div>
 </div>
 
@@ -393,13 +392,19 @@
 {% block scripts %}
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
+
+  let last_id
 $(document).ready(function () {
   const table = $('#propertyTable').DataTable({
     ajax: {
       url: "/api/getAllData",
       dataSrc: "",
       complete: function(data) {
-        // Update stats after data loaded
+         data_id = data.responseJSON[data.responseJSON.length - 1].id_properties
+         let lastNumber = parseInt(data_id.substring(3));
+         let newNumber = lastNumber + 1;
+         last_id = 'PRP' + newNumber.toString().padStart(3, '0');
+         // Update stats after data loaded
         updateStats(data.responseJSON);
       }
     },
@@ -496,6 +501,8 @@ $(document).ready(function () {
     responsive: true
   });
 
+  
+
   // Update statistics
   function updateStats(data) {
     if (!data || !data.length) return;
@@ -547,5 +554,39 @@ function closeModal() {
     modal.classList.add('hidden');
   }, 300);
 }
+
+$('#formTambahProperti').submit(function(event) {
+      event.preventDefault(); // Mencegah form untuk submit secara tradisional
+
+      // Mengambil data dari form
+      var formData = {
+        id_properties : last_id,
+        nama_properti: $('#nama_properti').val(),
+        tipe_properti: $('#tipe_properti').val(),
+        alamat_properti: $('#alamat_properti').val(),
+        harga: $('#harga').val(),
+        deskripsi_properti: $('#deskripsi_properti').val(),
+        besar_properti: $('#besar_properti').val(),
+        lebar_properti: $('#lebar_properti').val()
+        
+      };
+
+      // Kirim data menggunakan AJAX dengan JSON
+      $.ajax({
+        url: '/tambahData', // Endpoint yang menerima data
+        type: 'POST',
+        contentType: 'application/json', // Menyatakan bahwa kita mengirimkan JSON
+        data: JSON.stringify(formData), // Data dikirimkan dalam format JSON
+        success: function(response) {
+          alert('Properti berhasil ditambahkan!');
+          
+          $('#formTambahProperti')[0].reset(); // Reset form setelah berhasil
+        },
+        error: function(xhr, status, error) {
+          alert('Gagal menambahkan properti: ' + error);
+        }
+      });
+    });
+
 </script>
 {% endblock %}
