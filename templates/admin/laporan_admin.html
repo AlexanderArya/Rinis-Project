@@ -3,204 +3,353 @@
 {% block title %}PropertyCMS - Laporan{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-  <!-- Header -->
-  <div class="px-4 py-6 sm:px-0">
-    <div class="flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-bold text-gray-900">Laporan Properti</h1>
-        <p class="mt-2 text-sm text-gray-600">
-          Analisis dan laporan komprehensif properti Anda
-        </p>
-      </div>
-      <div class="flex space-x-3">
-        <select
-          id="periodSelect"
-          class="border border-gray-300 rounded-md px-3 py-2 bg-white text-sm"
-        >
-          <option value="7">7 Hari Terakhir</option>
-          <option value="30" selected>30 Hari Terakhir</option>
-          <option value="90">3 Bulan Terakhir</option>
-          <option value="365">1 Tahun Terakhir</option>
-        </select>
-        <button
-          onclick="generateReport()"
-          class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition duration-200"
-        >
-          Unduh Laporan
-        </button>
-      </div>
-    </div>
-  </div>
+   <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Generate Laporan Properti</h1>
+            <p class="mt-2 text-sm text-gray-600">
+                Buat dan unduh laporan properti dalam format PDF atau Excel
+            </p>
+        </div>
 
-  <!-- Stats Cards -->
-  <div class="px-4 sm:px-0 mb-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
-        <div class="p-5">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+        <!-- Report Configuration Card -->
+        <div class="bg-white shadow rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Konfigurasi Laporan</h2>
+            
+            <div class="space-y-6">
+                <!-- Jenis Laporan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Jenis Laporan
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                            <input type="radio" name="reportType" value="summary" checked class="mr-3">
+                            <div>
+                                <div class="font-medium text-gray-900">Ringkasan</div>
+                                <div class="text-sm text-gray-500">Overview properti</div>
+                            </div>
+                        </label>
+                        <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                            <input type="radio" name="reportType" value="detailed" class="mr-3">
+                            <div>
+                                <div class="font-medium text-gray-900">Detail Lengkap</div>
+                                <div class="text-sm text-gray-500">Semua informasi</div>
+                            </div>
+                        </label>
+                        <label class="relative flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-500 transition-colors">
+                            <input type="radio" name="reportType" value="financial" class="mr-3">
+                            <div>
+                                <div class="font-medium text-gray-900">Keuangan</div>
+                                <div class="text-sm text-gray-500">Pendapatan & biaya</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Periode -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Periode Laporan
+                    </label>
+                    <select id="periodSelect" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="7">7 Hari Terakhir</option>
+                        <option value="30" selected>30 Hari Terakhir</option>
+                        <option value="90">3 Bulan Terakhir</option>
+                        <option value="180">6 Bulan Terakhir</option>
+                        <option value="365">1 Tahun Terakhir</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+
+                <!-- Custom Date Range -->
+                <div id="customDateRange" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Tanggal Mulai
+                        </label>
+                        <input type="date" id="startDate" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Tanggal Akhir
+                        </label>
+                        <input type="date" id="endDate" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <!-- Filter Status -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Filter Status Properti
+                    </label>
+                    <select id="statusFilter" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">Semua Status</option>
+                        <option value="tersewa">Tersewa</option>
+                        <option value="kosong">Kosong</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+
+                <!-- Filter Jenis -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Filter Jenis Properti
+                    </label>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" value="rumah" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Rumah</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" value="apartemen" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Apartemen</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" value="ruko" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Ruko</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" value="villa" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Villa</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Komponen Laporan -->
+                <!-- <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Komponen yang Disertakan
+                    </label>
+                    <div class="space-y-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="includeStats" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Statistik Overview</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="includeCharts" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Grafik dan Chart</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="includeTable" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Tabel Detail Properti</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="includeAnalysis" class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Analisis dan Rekomendasi</span>
+                        </label>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Preview Info Card -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                 </svg>
-              </div>
+                <div>
+                    <h3 class="text-sm font-medium text-blue-900 mb-1">Pratinjau Laporan</h3>
+                    <p class="text-sm text-blue-700" id="reportPreview">
+                        Laporan akan mencakup 152 properti dari periode 30 hari terakhir
+                    </p>
+                </div>
             </div>
-            <div class="ml-5 w-0 flex-1">
-              <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">
-                  Total Properti
-                </dt>
-                <dd class="text-lg font-medium text-gray-900" id="totalProperties">
-                  152
-                </dd>
-              </dl>
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
-        <div class="p-5">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button onclick="generatePDF()" class="flex-1 bg-red-600 text-white px-6 py-3 rounded-md font-medium hover:bg-red-700 transition duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path>
                 </svg>
-              </div>
-            </div>
-            <div class="ml-5 w-0 flex-1">
-              <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">
-                  Pendapatan Bulan Ini
-                </dt>
-                <dd class="text-lg font-medium text-gray-900" id="monthlyRevenue">
-                  Rp 125.4M
-                </dd>
-              </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
-        <div class="p-5">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                Download PDF
+            </button>
+            <button onclick="generateExcel()" class="flex-1 bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path>
                 </svg>
-              </div>
-            </div>
-            <div class="ml-5 w-0 flex-1">
-              <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">
-                  Properti Tersewa
-                </dt>
-                <dd class="text-lg font-medium text-gray-900" id="occupiedProperties">
-                  134
-                </dd>
-              </dl>
-            </div>
-          </div>
+                Download Excel
+            </button>
         </div>
-      </div>
 
-      <div class="bg-white overflow-hidden shadow rounded-lg card-hover">
-        <div class="p-5">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                </svg>
-              </div>
+        <!-- Recent Reports -->
+        <div class="mt-8 bg-white shadow rounded-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Laporan Terakhir</h2>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium text-gray-900">Laporan Keuangan Q4 2024</div>
+                            <div class="text-sm text-gray-500">15 Desember 2024 • PDF</div>
+                        </div>
+                    </div>
+                    <button class="text-blue-600 hover:text-blue-700 font-medium text-sm">Download</button>
+                </div>
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium text-gray-900">Data Properti November 2024</div>
+                            <div class="text-sm text-gray-500">1 Desember 2024 • Excel</div>
+                        </div>
+                    </div>
+                    <button class="text-blue-600 hover:text-blue-700 font-medium text-sm">Download</button>
+                </div>
+                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-medium text-gray-900">Ringkasan Properti Oktober 2024</div>
+                            <div class="text-sm text-gray-500">28 Oktober 2024 • PDF</div>
+                        </div>
+                    </div>
+                    <button class="text-blue-600 hover:text-blue-700 font-medium text-sm">Download</button>
+                </div>
             </div>
-            <div class="ml-5 w-0 flex-1">
-              <dl>
-                <dt class="text-sm font-medium text-gray-500 truncate">
-                  Tingkat Hunian
-                </dt>
-                <dd class="text-lg font-medium text-gray-900" id="occupancyRate">
-                  88.2%
-                </dd>
-              </dl>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Charts Section -->
-  <div class="px-4 sm:px-0 mb-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-medium text-gray-900">Tren Pendapatan</h3>
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span class="text-sm text-gray-600">Pendapatan Bulanan</span>
-          </div>
-        </div>
-        <canvas id="revenueChart" width="400" height="200"></canvas>
-      </div>
+    <script>
+      $(function () {
+          // Trigger semua perubahan
+          $('input, select').on('change keyup', function () {
+              updateReportPreview();
+          });
 
-      <div class="bg-white shadow rounded-lg p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-medium text-gray-900">Distribusi Jenis Properti</h3>
-        </div>
-        <canvas id="propertyTypeChart" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
+          // Custom date toggle
+          $('#periodSelect').on('change', function () {
+              $('#customDateRange').toggleClass('hidden', $(this).val() !== 'custom');
+          });
 
-  <!-- Table -->
-  <div class="px-4 sm:px-0">
-    <div class="bg-white shadow rounded-lg">
-      <div class="px-6 py-4 border-b border-gray-200">
-        <div class="flex items-center justify-between">
-          <h3 class="text-lg font-medium text-gray-900">Laporan Properti Detail</h3>
-          <div class="flex space-x-2">
-            <input type="text" id="searchInput" placeholder="Cari properti..."
-                   class="border border-gray-300 rounded-md px-3 py-1 text-sm" />
-            <select id="statusFilter" class="border border-gray-300 rounded-md px-3 py-1 text-sm">
-              <option value="">Semua Status</option>
-              <option value="Tersewa">Tersewa</option>
-              <option value="Kosong">Kosong</option>
-              <option value="Maintenance">Maintenance</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Properti</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Sewa</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pendapatan Bulan Ini</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penyewa</th>
-            </tr>
-          </thead>
-          <tbody id="propertyTableBody" class="bg-white divide-y divide-gray-200">
-            <!-- Diisi oleh JavaScript -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+          updateReportPreview(); // initial load
+      });
 
-{% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<script>
-  // JS sama persis dari file asli (initCharts, populateTable, dsb.)
-  // taruh di sini
-</script>
+      function updateReportPreview() {
+          const reportTypeMap = {
+              summary: 'Ringkasan',
+              detailed: 'Detail Lengkap',
+              financial: 'Keuangan'
+          };
+
+          // Jenis laporan
+          const reportType = $('input[name="reportType"]:checked').val();
+          const reportLabel = reportTypeMap[reportType];
+
+          // Periode
+          let periodText;
+          const periodVal = $('#periodSelect').val();
+
+          if (periodVal === 'custom') {
+              const start = $('#startDate').val();
+              const end = $('#endDate').val();
+              periodText = start && end
+                  ? `periode ${start} sampai ${end}`
+                  : 'periode custom';
+          } else {
+              periodText = $('#periodSelect option:selected').text();
+          }
+
+          // Status properti
+          const statusVal = $('#statusFilter').val();
+          const statusText = statusVal === 'all'
+              ? 'semua status'
+              : $('#statusFilter option:selected').text();
+
+          // Jenis properti
+          const propertyTypes = $('input[type="checkbox"]:checked')
+              .map(function () {
+                  return $(this).val();
+              })
+              .get();
+
+          const propertyText = propertyTypes.length
+              ? propertyTypes.join(', ')
+              : 'tidak ada jenis properti';
+
+          // Update preview
+          $('#reportPreview').text(
+              `Laporan ${reportLabel} akan mencakup properti (${propertyText}) dengan status ${statusText} untuk ${periodText}.`
+          );
+      }
+
+            
+      function updateAlert(){
+          $('#reportPreview').alert("test")
+        }
+
+        // Toggle custom date range
+        document.getElementById('periodSelect').addEventListener('change', function() {
+            const customRange = document.getElementById('customDateRange');
+            if (this.value === 'custom') {
+                customRange.classList.remove('hidden');
+            } else {
+                customRange.classList.add('hidden');
+            }
+            updatePreview();
+        });
+
+        // Update preview text
+        function updatePreview() {
+            const period = document.getElementById('periodSelect').value;
+            const status = document.getElementById('statusFilter').value;
+            const reportType = document.querySelector('input[name="reportType"]:checked').value;
+            
+            let periodText = '';
+            switch(period) {
+                case '7': periodText = '7 hari terakhir'; break;
+                case '30': periodText = '30 hari terakhir'; break;
+                case '90': periodText = '3 bulan terakhir'; break;
+                case '180': periodText = '6 bulan terakhir'; break;
+                case '365': periodText = '1 tahun terakhir'; break;
+                case 'custom': periodText = 'periode custom'; break;
+            }
+            
+            let typeText = '';
+            switch(reportType) {
+                case 'summary': typeText = 'Ringkasan'; break;
+                case 'detailed': typeText = 'Detail Lengkap'; break;
+                case 'financial': typeText = 'Keuangan'; break;
+            }
+            
+            const statusText = status === 'all' ? '' : ` dengan status ${status}`;
+            document.getElementById('reportPreview').textContent = 
+                `Laporan ${typeText} akan mencakup 152 properti dari ${periodText}${statusText}`;
+        }
+
+        // Add event listeners
+        document.querySelectorAll('input[name="reportType"]').forEach(radio => {
+            radio.addEventListener('change', updatePreview);
+        });
+        document.getElementById('statusFilter').addEventListener('change', updatePreview);
+
+      function collectReportFilter() {
+        return {
+            report_type: $('input[name="reportType"]:checked').val(),
+            period: $('#periodSelect').val(),
+            start_date: $('#startDate').val() || null,
+            end_date: $('#endDate').val() || null,
+            status: $('#statusFilter').val(),
+            property_types: $('input[type="checkbox"]:checked')
+                .map(function () {
+                    return $(this).val();
+                })
+                .get()
+        };
+      }
+    </script>
 {% endblock %}

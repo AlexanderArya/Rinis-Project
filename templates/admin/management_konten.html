@@ -168,6 +168,35 @@
       color: #4b5563;
       font-size: 0.875rem;
     }
+    
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 6px solid #ccc;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
   </style>
 {% endblock %}
 
@@ -382,9 +411,13 @@
     </button>
   </div>
 </form>
-
-
   </div>
+
+  <div id="loader" style="display:none;">
+  <div class="spinner"></div>
+  <p>Memproses data...</p>
+</div>
+
 </div>
 
 {% endblock %}
@@ -392,21 +425,32 @@
 {% block scripts %}
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script>
+function getAllData(){
+  // 🔥 TAMPILKAN LOADER DI AWAL
+  $('#loader').show();
 
-  let last_id
-$(document).ready(function () {
+  if ($.fn.DataTable.isDataTable('#propertyTable')) {
+    $('#propertyTable').DataTable().clear().destroy();
+  }
   const table = $('#propertyTable').DataTable({
     ajax: {
       url: "/api/getAllData",
       dataSrc: "",
       complete: function(data) {
+        console.log(data)
          data_id = data.responseJSON[data.responseJSON.length - 1].id_properties
          let lastNumber = parseInt(data_id.substring(3));
          let newNumber = lastNumber + 1;
          last_id = 'PRP' + newNumber.toString().padStart(3, '0');
          // Update stats after data loaded
         updateStats(data.responseJSON);
+        
       }
+    },
+     initComplete: function () {
+      setTimeout(() => {
+        $('#loader').fadeOut(200);
+      }, 300);
     },
     columns: [
       { 
@@ -498,10 +542,9 @@ $(document).ready(function () {
       }
     },
     pageLength: 10,
-    responsive: true
+    responsive: true,
+    // 🔥 LOADER DIHILANGKAN SETELAH TABEL TAMPIL
   });
-
-  
 
   // Update statistics
   function updateStats(data) {
@@ -522,6 +565,12 @@ $(document).ready(function () {
     const avgPrice = totalValue / data.length;
     $('#avgPrice').text('Rp ' + Math.round(avgPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
   }
+}
+
+
+  let last_id
+$(document).ready(function () {
+  getAllData()
 });
 
 function deleteProperty(id) {
@@ -556,37 +605,47 @@ function closeModal() {
 }
 
 $('#formTambahProperti').submit(function(event) {
-      event.preventDefault(); // Mencegah form untuk submit secara tradisional
+  event.preventDefault();
 
-      // Mengambil data dari form
-      var formData = {
-        id_properties : last_id,
-        nama_properti: $('#nama_properti').val(),
-        tipe_properti: $('#tipe_properti').val(),
-        alamat_properti: $('#alamat_properti').val(),
-        harga: $('#harga').val(),
-        deskripsi_properti: $('#deskripsi_properti').val(),
-        besar_properti: $('#besar_properti').val(),
-        lebar_properti: $('#lebar_properti').val()
-        
-      };
+  // Tampilkan loader
+  $('#loader').show();
 
-      // Kirim data menggunakan AJAX dengan JSON
-      $.ajax({
-        url: '/tambahData', // Endpoint yang menerima data
-        type: 'POST',
-        contentType: 'application/json', // Menyatakan bahwa kita mengirimkan JSON
-        data: JSON.stringify(formData), // Data dikirimkan dalam format JSON
-        success: function(response) {
-          alert('Properti berhasil ditambahkan!');
-          
-          $('#formTambahProperti')[0].reset(); // Reset form setelah berhasil
-        },
-        error: function(xhr, status, error) {
-          alert('Gagal menambahkan properti: ' + error);
-        }
-      });
-    });
+  var formData = {
+    id_properties: last_id,
+    nama_properti: $('#nama_properti').val(),
+    tipe_properti: $('#tipe_properti').val(),
+    alamat_properti: $('#alamat_properti').val(),
+    harga: $('#harga').val(),
+    deskripsi_properti: $('#deskripsi_properti').val(),
+    besar_properti: $('#besar_properti').val(),
+    lebar_properti: $('#lebar_properti').val()
+  };
+
+  $.ajax({
+    url: '/tambahData',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(formData),
+
+    success: function(response) {
+      getAllData();
+    },
+
+    error: function(xhr, status, error) {
+      alert('Gagal menambahkan properti: ' + error);
+    },
+
+    complete: function() {
+      // Sembunyikan loader (selalu dijalankan)
+      closeModal()
+      $('#loader').hide();
+    }
+  });
+});
+
 
 </script>
 {% endblock %}
+
+<!-- alert('Properti berhasil ditambahkan!');
+      $('#formTambahProperti')[0].reset(); -->
