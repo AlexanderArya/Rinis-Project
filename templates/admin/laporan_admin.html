@@ -85,9 +85,9 @@
                     </label>
                     <select id="statusFilter" class="w-full border border-gray-300 rounded-md px-4 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="all">Semua Status</option>
-                        <option value="tersewa">Tersewa</option>
-                        <option value="kosong">Kosong</option>
-                        <option value="maintenance">Maintenance</option>
+                        <option value="Disewakan">Disewakan</option>
+                        <option value="Dijual">Dijual</option>
+                        <option value="Display">Display</option>
                     </select>
                 </div>
 
@@ -98,20 +98,24 @@
                     </label>
                     <div class="flex flex-wrap gap-3">
                         <label class="flex items-center">
-                            <input type="checkbox" value="rumah" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <input type="checkbox" value="Rumah" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <span class="text-sm text-gray-700">Rumah</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" value="apartemen" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <input type="checkbox" value="Apartemen" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <span class="text-sm text-gray-700">Apartemen</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" value="ruko" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <input type="checkbox" value="Ruko" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <span class="text-sm text-gray-700">Ruko</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="checkbox" value="villa" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <input type="checkbox" value="Villa" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
                             <span class="text-sm text-gray-700">Villa</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" value="Gudang" checked class="mr-2 w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="text-sm text-gray-700">Gudang</span>
                         </label>
                     </div>
                 </div>
@@ -225,6 +229,7 @@
     </div>
 
     <script>
+      // Untuk mengubah view report terakhir 
       $(function () {
           // Trigger semua perubahan
           $('input, select').on('change keyup', function () {
@@ -286,56 +291,20 @@
               `Laporan ${reportLabel} akan mencakup properti (${propertyText}) dengan status ${statusText} untuk ${periodText}.`
           );
       }
-
-            
+      
       function updateAlert(){
           $('#reportPreview').alert("test")
         }
 
-        // Toggle custom date range
-        document.getElementById('periodSelect').addEventListener('change', function() {
+      // Jika user memilih costum date maka akan muncul inputan untuk tanggal 
+      document.getElementById('periodSelect').addEventListener('change', function() {
             const customRange = document.getElementById('customDateRange');
             if (this.value === 'custom') {
                 customRange.classList.remove('hidden');
             } else {
                 customRange.classList.add('hidden');
             }
-            updatePreview();
         });
-
-        // Update preview text
-        function updatePreview() {
-            const period = document.getElementById('periodSelect').value;
-            const status = document.getElementById('statusFilter').value;
-            const reportType = document.querySelector('input[name="reportType"]:checked').value;
-            
-            let periodText = '';
-            switch(period) {
-                case '7': periodText = '7 hari terakhir'; break;
-                case '30': periodText = '30 hari terakhir'; break;
-                case '90': periodText = '3 bulan terakhir'; break;
-                case '180': periodText = '6 bulan terakhir'; break;
-                case '365': periodText = '1 tahun terakhir'; break;
-                case 'custom': periodText = 'periode custom'; break;
-            }
-            
-            let typeText = '';
-            switch(reportType) {
-                case 'summary': typeText = 'Ringkasan'; break;
-                case 'detailed': typeText = 'Detail Lengkap'; break;
-                case 'financial': typeText = 'Keuangan'; break;
-            }
-            
-            const statusText = status === 'all' ? '' : ` dengan status ${status}`;
-            document.getElementById('reportPreview').textContent = 
-                `Laporan ${typeText} akan mencakup 152 properti dari ${periodText}${statusText}`;
-        }
-
-        // Add event listeners
-        document.querySelectorAll('input[name="reportType"]').forEach(radio => {
-            radio.addEventListener('change', updatePreview);
-        });
-        document.getElementById('statusFilter').addEventListener('change', updatePreview);
 
       function collectReportFilter() {
         return {
@@ -351,5 +320,60 @@
                 .get()
         };
       }
+      
+      function generateExcel() {
+        const payload = collectReportFilter();
+        
+        console.log(payload)
+
+        $.ajax({
+            url: '/reports/properties/excel',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(payload),
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function () {
+                console.log('Generating Excel...', payload);
+            },
+            success: function (blob) {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'laporan_properties.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            },
+            error: function (xhr) {
+                alert('Gagal generate Excel');
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+      function generatePDF() {
+          const payload = collectReportFilter();
+
+          return $.ajax({
+              url: '/reports/properties/pdf',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify(payload),
+              xhrFields: {
+                  responseType: 'blob'
+              }
+          }).done(function (blob) {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'laporan_properties.pdf';
+              a.click();
+              window.URL.revokeObjectURL(url);
+          });
+      }
+
     </script>
 {% endblock %}
